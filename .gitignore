@@ -1,4 +1,5 @@
-/bin
-/include
-/lib
-pip-self-check.json
+/bin/*
+/include/*
+/lib/*
+pip-selfcheck.json
+Pipfile.lock
