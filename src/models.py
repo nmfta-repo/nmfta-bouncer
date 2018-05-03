@@ -23,3 +23,10 @@ class UserModel(db.Model):
   @staticmethod
   def verify_hash(password, hash):
     return sha256.verify(password, hash)
+
+
+class WhitelistModel(db.Model):
+  __tablename__ = "whitelist"
+
+  id = db.Column(db.Integer, primary_key = True)
+  ip = db.Column(db.String(120), unique = True, nullable = False)

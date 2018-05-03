@@ -13,7 +13,7 @@ api = Api(app, prefix="/v{}".format(version))
 database.init_db(app)
 
 
-import auth
+import auth, whitelist
 
 class AuthTest(Resource):
   @jwt_required
