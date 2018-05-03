@@ -12,17 +12,17 @@ jwt = JWTManager(app)
 api = Api(app, prefix="/v{}".format(version))
 database.init_db(app)
 
+import auth, firewall
 
-import auth, whitelist
-
-class AuthTest(Resource):
-  @jwt_required
-  def get(self):
-    return {"test":"response"}
-
+#add auth module
 api.add_resource(auth.Login, "/login")
-api.add_resource(auth.Register, "/register")
-api.add_resource(AuthTest, "/authtest")
+api.add_resource(auth.Register, "/register") #testing only
+
+#add firewall module
+#add whitelist module
+api.add_resource(firewall.Whitelists, "/whitelists")
+api.add_resource(firewall.WhitelistsCreate, "/whitelists/create")
+#add blacklist module
 
 
 

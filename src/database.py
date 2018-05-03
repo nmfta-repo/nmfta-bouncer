@@ -11,6 +11,7 @@ def init_db(app):
   db = SQLAlchemy(app)
   
   from models import UserModel
+  from models import IPModel
   db.create_all()
 
 
