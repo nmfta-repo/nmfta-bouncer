@@ -26,6 +26,7 @@ class UserModel(db.Model):
 
 
 class IPModel(db.Model):
+    __abstract__ = True
 
     id = db.Column(db.Integer, primary_key = True)
     ipv4 = db.Column(db.String(120), unique = True, nullable = True)
