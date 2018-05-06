@@ -47,6 +47,12 @@ def show_ip_whitelists(access_token):
     print data['Result']['Status']
     print 'IPAddresses', data['IPAddresses']
 
+def search_whitelists(access_token):
+    filter = raw_input("Filter: ")
+    data = requests.get("{}/{}/whitelists/ipaddresses/{}".format(host,api_version, filter),
+        headers={"Authorization":"Bearer {}".format(access_token)}).json()
+    print "Results",data["SearchResult"]["Entries"]
+
 def add_whitelist(access_token):
 	ip = raw_input("IP: ")
 	comments = ""#raw_input("Comments: ")
@@ -70,7 +76,7 @@ def add_blacklist(access_token):
 def menu():
     global access_token
     menus = ["Login", "Register", "Show Whitelist", "Show Whitelist IPs",
-        "Create Whitelist Entry"]
+        "Search Whitelist", "Create Whitelist Entry"]
     print "\nMenu:\n"
     for i in range(0, len(menus)):
         print i, menus[i]
@@ -90,12 +96,20 @@ def menu():
             print "Must log in first"
             login()
         show_whitelists(access_token)
+
     elif opt is "3":
         if access_token is "":
             print "Must log in first"
             login()
         show_ip_whitelists(access_token)
+
     elif opt is "4":
+        if access_token is "":
+            print "Must log in first"
+            login()
+        search_whitelists(access_token)
+        
+    elif opt is "5":
         if access_token is "":
             print "Must log in first"
             login()

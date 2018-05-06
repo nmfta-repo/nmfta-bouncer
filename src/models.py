@@ -58,6 +58,13 @@ class IPModel(db.Model):
                 ips.add(ip.ipv4)
         ret = list(ips) if len(ips) > 0 else []
         return ret
+    @classmethod
+    def search(cls, filter):
+        if "." in filter:
+            res = cls.query.filter_by(ipv4=filter).first()
+            if res is not None:
+                return res.ipv4
+
 
 class WLModel(IPModel):
     __tablename__ = "whitelist"
