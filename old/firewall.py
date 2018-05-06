@@ -11,42 +11,26 @@ parser.add_argument("End_Date", required=False)
 parser.add_argument("Comments", required=False)
 parser.add_argument("Active", required=False)
 
-class Checker():
+class Firewall(Resource):
     def __init__(self, ltype):
         self.ltype = ltype
     #check if request is WList or BList
     def type_test(self):
         return WLModel if self.ltype is "wl" else BLModel
 
-class IpGeoList(Checker, Resource):
-    #Match List IP/Geo Entries
+    #Match List Entries
     @jwt_required
     def get(self):
         mod = self.type_test()
         return jsonify(
             Result = {
                 "Status":"Success",
-                "Message":"Showing All IPs and Geo"
+                "Message":"Showing All  IPs"
             },
-            IPAddresses=mod.get_all_ip(),
-            GeoLocations=[]
+            IPAddresses=mod.get_all_ip()
         )
 
-class IpList(Checker, Resource):
-    #Match List IP Entries
-    @jwt_required
-    def get(self):
-        mod = self.type_test()
-        return jsonify(
-            Result = {
-                "Status":"Success",
-                "Message":"Showing All IPs"
-            },
-            IPAddresses=mod.get_all_ip(),
-        )
-
-
-class CreateIpEntry(Checker, Resource):
+    #Match Create Entry
     @jwt_required
     def post(self):
         mod = self.type_test()
