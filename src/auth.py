@@ -11,33 +11,33 @@ parser.add_argument("grant_type")
 
 #TESTING PURPOSSES ONLY!!!
 class Register(Resource):
-  def post(self):
-    data = parser.parse_args()
-    if UserModel.find_by_username(data['username']):
-      return jsonify(message='user already exists')
-    new_user = UserModel(username = data['username'], password = UserModel.gen_hash(data['password']))
-    try:
-      new_user.save_to_db()
-      return jsonify(message='all good with user creation')
-    except Exception as e:
-      print e
-      return jsonify(message='failed user creation'), 500
+	def post(self):
+		data = parser.parse_args()
+		if UserModel.find_by_username(data['username']):
+			return jsonify(message='user already exists')
+		new_user = UserModel(username = data['username'], password = UserModel.gen_hash(data['password']))
+		try:
+			new_user.save_to_db()
+			return jsonify(message='all good with user creation')
+		except Exception as e:
+			print e
+			return jsonify(message='failed user creation'), 500
 #TESTING PURPOSSES ONLY!!!
 
 class Login(Resource):
-  def post(self):
-    data = parser.parse_args()
-    user = UserModel.find_by_username(data['username'])
-    if not user:
-      return jsonify(message='User does not exist')
+	def post(self):
+		data = parser.parse_args()
+		user = UserModel.find_by_username(data['username'])
+		if not user:
+			return jsonify(message='User does not exist')
 
-    if UserModel.verify_hash(data['password'], user.password) and data['grant_type'] == 'password':
-      access_token = create_access_token(identity = data['username'])
-      return jsonify(
-        access_token=access_token,
-        token_type="bearer",
-        expires_i=3600,
-        claim_level="complete"
-      )
-    else:
-      return jsonify(message='failed to log in')
+		if UserModel.verify_hash(data['password'], user.password) and data['grant_type'] == 'password':
+			access_token = create_access_token(identity = data['username'])
+			return jsonify(
+				access_token=access_token,
+				token_type="bearer",
+				expires_i=3600,
+				claim_level="complete"
+			)
+		else:
+			return jsonify(message='failed to log in')

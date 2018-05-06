@@ -5,5 +5,5 @@ This document gives an overview of the requirements for the REST API that could 
 ### To setup and run your python venv use:
 ```
 $ pipenv install
-$ pipenv run python2 src/app.py   
+$ pipenv run python2 src/app.py	 
 ```
