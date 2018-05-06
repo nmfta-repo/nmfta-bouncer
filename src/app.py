@@ -12,7 +12,7 @@ jwt = JWTManager(app)
 api = Api(app, prefix="/v{}".format(version))
 database.init_db(app)
 
-import auth, whitelist, blacklist
+import auth, whitelist, blacklist, firewall
 
 #add auth module
 api.add_resource(auth.Login, "/login")
@@ -20,15 +20,20 @@ api.add_resource(auth.Register, "/register") #testing only
 
 #add firewall modules
 #add whitelist module
-api.add_resource(whitelist.Whitelists, "/whitelists")
-api.add_resource(whitelist.WhitelistsCreate, "/whitelists/create")
+#api.add_resource(whitelist.Whitelists, "/whitelists")
+#api.add_resource(whitelist.WhitelistsCreate, "/whitelists/create")
 #add blacklist module
-api.add_resource(blacklist.Blacklists, "/blacklists")
-api.add_resource(blacklist.BlacklistsCreate, "/blacklists/create")
+#api.add_resource(blacklist.Blacklists, "/blacklists")
+#api.add_resource(blacklist.BlacklistsCreate, "/blacklists/create")
+
+api.add_resource(firewall.Firewall, "/whitelists", resource_class_kwargs={"ltype":"wl"}, endpoint="wll")
+api.add_resource(firewall.Firewall, "/blacklists", resource_class_kwargs={"ltype":"bl"}, endpoint="bll")
+api.add_resource(firewall.Firewall, "/whitelists/create", resource_class_kwargs={"ltype":"wl"}, endpoint="wlc")
+api.add_resource(firewall.Firewall, "/blacklists/create", resource_class_kwargs={"ltype":"bl"}, endpoint="blc")
 
 
 if __name__ == '__main__':
-		if "--clear" in sys.argv:
-				database.clear_data()
-				exit()
-		app.run(debug=True, port=8080)
+        if "--clear" in sys.argv:
+                database.clear_data()
+                exit()
+        app.run(debug=True, port=8080)
