@@ -52,16 +52,13 @@ class EntrySearch(Checker, Resource):
     def get(self, filter):
         mod = self.type_test()
         search_results = []
-        search_ip = []
         for ip in str(filter).split(","):
             if "/" in ip:
                 #do cidr calc
                 pass
-            search_ip.append(ip)
-        for sip in search_ip:
-            t = mod.search(sip)
+            t = mod.search(ip)
             if t:
-                search_results.append(t)
+                search_results.append(t.ipv4)
         return jsonify(
             Result = {
                 "Status":"Success",
@@ -70,6 +67,29 @@ class EntrySearch(Checker, Resource):
             SearchResult = {
                 "Input_IP":filter,
                 "Entries":search_results
+            }
+        )
+
+class Entry(Checker, Resource):
+    #Search for Matching Entry
+    @jwt_required
+    def get(self, entry):
+        mod = self.type_test()
+        info = mod.search(entry)
+        if info is not None:
+            return jsonify(
+                Result = {
+                    "Status":"Success",
+                    "Message":"Showing Matching Entry"
+                },
+                Entry={
+                "IPv4":info.ipv4, "IPv6":info.ipv6, "Start_Date":info.start_date,
+                    "End_Date":info.end_date, "Comments":info.comments, "Active":info.active}
+            )
+        return jsonify(
+            Result = {
+                "Status":"Error",
+                "Message":"No Matching Entry"
             }
         )
 
