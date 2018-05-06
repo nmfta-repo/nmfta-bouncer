@@ -6,7 +6,7 @@ def init_db(app):
 	#Database setup
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SECRET_KEY'] = 'some-secret-string'									 #MODIFY
+    app.config['SECRET_KEY'] = 'some-secret-string'	#should also probably change this
     global db
     db = SQLAlchemy(app)
 

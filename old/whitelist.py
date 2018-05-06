@@ -48,7 +48,7 @@ class WhitelistsCreate(Resource):
         #insert new IP into database as whitelisted value
         new_ip = WLModel(ipv4 = data['IPv4'], ipv6 = data['IPv6'], start_date = data['Start_Date'],
             end_date = data['End_Date'], comments = data['Comments'], active = data["Active"])
-        new_ip.save_to_db()
+        new_ip.save()
         #actually add to firewall code (system command maybe?)
         return jsonify(
                 Result = {

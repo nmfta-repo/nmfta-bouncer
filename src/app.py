@@ -6,13 +6,22 @@ import sys, database
 
 version = 1
 
+#Initialize Flask API and Create DB
 app = Flask(__name__)
-app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'
+app.config['JWT_SECRET_KEY'] = 'jwt-secret-string' #should probably change this
 jwt = JWTManager(app)
 api = Api(app, prefix="/v{}".format(version))
 database.init_db(app)
 
+'''
+Import Auth and Firewall modules
+#If we try to import them sooner, they do
+not have the DB built and crash
+'''
+
 import auth, firewall
+
+#Add resources and endpoints to facilitate RESTful paradigm
 
 #add auth module
 api.add_resource(auth.Login, "/login")
@@ -35,7 +44,8 @@ api.add_resource(firewall.CreateIpEntry, "/blacklists/create", resource_class_kw
 
 
 if __name__ == '__main__':
-        if "--clear" in sys.argv:
-                database.clear_data()
-                exit()
-        app.run(debug=True, port=8080)
+    #dev feature to clear the database
+    if "--clear" in sys.argv:
+        database.clear_data()
+        exit()
+    app.run(debug=True, port=8080)
