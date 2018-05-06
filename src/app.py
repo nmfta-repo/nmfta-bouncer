@@ -22,13 +22,16 @@ api.add_resource(auth.Register, "/register") #testing only
 #add whitelist module
 api.add_resource(firewall.IpGeoList, "/whitelists", resource_class_kwargs={"ltype":"wl"}, endpoint="wlgl")
 api.add_resource(firewall.IpList, "/whitelists/ipaddresses", resource_class_kwargs={"ltype":"wl"}, endpoint="wl")
-api.add_resource(firewall.EntrySearch, "/whitelists/ipaddresses/<string:filter>", resource_class_kwargs={"ltype":"wl"}, endpoint="wlf")
-api.add_resource(firewall.CreateIpEntry, "/whitelists/create", resource_class_kwargs={"ltype":"wc"})
+api.add_resource(firewall.EntrySearch, "/whitelists/ipaddresses/filter/<string:filter>", resource_class_kwargs={"ltype":"wl"}, endpoint="wlf")
+api.add_resource(firewall.Entry, "/whitelists/ipaddresses/<string:entry>", resource_class_kwargs={"ltype":"wl"}, endpoint="wle")
+api.add_resource(firewall.CreateIpEntry, "/whitelists/create", resource_class_kwargs={"ltype":"wl"}, endpoint="wlc")
 
 #add blacklist module
 api.add_resource(firewall.IpGeoList, "/blacklists", resource_class_kwargs={"ltype":"bl"}, endpoint="blgl")
-api.add_resource(firewall.IpList, "/blacklists/create", resource_class_kwargs={"ltype":"bl"}, endpoint="bl")
-api.add_resource(firewall.CreateIpEntry, "/blacklists/create", resource_class_kwargs={"ltype":"bl"}, endpoint="bc")
+api.add_resource(firewall.IpList, "/blacklists/ipaddresses", resource_class_kwargs={"ltype":"bl"}, endpoint="bl")
+api.add_resource(firewall.EntrySearch, "/blacklists/ipaddresses/filter/<string:filter>", resource_class_kwargs={"ltype":"bl"}, endpoint="blf")
+api.add_resource(firewall.Entry, "/blacklists/ipaddresses/<string:entry>", resource_class_kwargs={"ltype":"bl"}, endpoint="ble")
+api.add_resource(firewall.CreateIpEntry, "/blacklists/create", resource_class_kwargs={"ltype":"bl"}, endpoint="blc")
 
 
 if __name__ == '__main__':

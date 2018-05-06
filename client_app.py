@@ -49,9 +49,15 @@ def show_ip_whitelists(access_token):
 
 def search_whitelists(access_token):
     filter = raw_input("Filter: ")
-    data = requests.get("{}/{}/whitelists/ipaddresses/{}".format(host,api_version, filter),
+    data = requests.get("{}/{}/whitelists/ipaddresses/filter/{}".format(host,api_version, filter),
         headers={"Authorization":"Bearer {}".format(access_token)}).json()
     print "Results",data["SearchResult"]["Entries"]
+
+def search_entry_whitelists(access_token):
+    filter = raw_input("Entry: ")
+    data = requests.get("{}/{}/whitelists/ipaddresses/{}".format(host,api_version, filter),
+        headers={"Authorization":"Bearer {}".format(access_token)}).json()
+    print "Entry",data["Entry"]
 
 def add_whitelist(access_token):
 	ip = raw_input("IP: ")
@@ -61,10 +67,29 @@ def add_whitelist(access_token):
 	print	data['Result']['Message']
 
 def show_blacklists(access_token):
-	data = requests.get("{}/{}/blacklists".format(host,api_version), headers={"Authorization":"Bearer {}".format(access_token)}).json()
-	print"\nBlacklist Data:"
-	print data['Result']['Status']
-	print data['IPAddresses']
+    data = requests.get("{}/{}/blacklists".format(host,api_version), headers={"Authorization":"Bearer {}".format(access_token)}).json()
+    print "\nBlacklist Data:"
+    print data['Result']['Status']
+    print 'IPAddresses', data['IPAddresses']
+    print 'GeoLocations', data['GeoLocations']
+
+def show_ip_blacklists(access_token):
+    data = requests.get("{}/{}/blacklists/ipaddresses".format(host,api_version), headers={"Authorization":"Bearer {}".format(access_token)}).json()
+    print "\nBlacklist Data:"
+    print data['Result']['Status']
+    print 'IPAddresses', data['IPAddresses']
+
+def search_blacklists(access_token):
+    filter = raw_input("Filter: ")
+    data = requests.get("{}/{}/blacklists/ipaddresses/filter/{}".format(host,api_version, filter),
+        headers={"Authorization":"Bearer {}".format(access_token)}).json()
+    print "Results",data["SearchResult"]["Entries"]
+
+def search_entry_blacklists(access_token):
+    filter = raw_input("Entry: ")
+    data = requests.get("{}/{}/blacklists/ipaddresses/{}".format(host,api_version, filter),
+        headers={"Authorization":"Bearer {}".format(access_token)}).json()
+    print "Entry",data["Entry"]
 
 def add_blacklist(access_token):
 	ip = raw_input("IP: ")
@@ -73,10 +98,14 @@ def add_blacklist(access_token):
 	data = requests.post("{}/{}/blacklists/create".format(host,api_version), data=payload, headers={"Authorization":"Bearer {}".format(access_token)}).json()
 	print	data['Result']['Message']
 
+
+
 def menu():
     global access_token
     menus = ["Login", "Register", "Show Whitelist", "Show Whitelist IPs",
-        "Search Whitelist", "Create Whitelist Entry"]
+        "Search Whitelist", "Search Entry Whitelist", "Create Whitelist Entry",
+        "Show Blacklist", "Show Blacklist IPs", "Search Blacklist",
+        "Search Entry Blacklist", "Create Blacklist Entry"]
     print "\nMenu:\n"
     for i in range(0, len(menus)):
         print i, menus[i]
@@ -108,12 +137,48 @@ def menu():
             print "Must log in first"
             login()
         search_whitelists(access_token)
-        
+
     elif opt is "5":
         if access_token is "":
             print "Must log in first"
             login()
+        search_entry_whitelists(access_token)
+
+    elif opt is "6":
+        if access_token is "":
+            print "Must log in first"
+            login()
         add_whitelist(access_token)
+
+    elif opt is "7":
+        if access_token is "":
+            print "Must log in first"
+            login()
+        show_blacklists(access_token)
+
+    elif opt is "8":
+        if access_token is "":
+            print "Must log in first"
+            login()
+        show_ip_blacklists(access_token)
+
+    elif opt is "9":
+        if access_token is "":
+            print "Must log in first"
+            login()
+        search_blacklists(access_token)
+
+    elif opt is "10":
+        if access_token is "":
+            print "Must log in first"
+            login()
+        search_entry_blacklists(access_token)
+
+    elif opt is "11":
+        if access_token is "":
+            print "Must log in first"
+            login()
+        add_blacklist(access_token)
 
 while True:
     menu()
