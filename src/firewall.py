@@ -12,6 +12,13 @@ parser.add_argument("End_Date", required=False)
 parser.add_argument("Comments", required=False)
 parser.add_argument("Active", required=False)
 
+'''
+Check class allows switching between Whitelist and Blacklist
+from the Resource call by switching a Class variable from "wl" to "bl"
+This lets us use the same CRUD functions for Whitelist and Blacklist
+Maximizes code reuse while maintaining flexibility
+'''
+
 class Checker():
     def __init__(self, ltype):
         self.ltype = ltype
@@ -19,8 +26,8 @@ class Checker():
     def type_test(self):
         return WLModel if self.ltype is "wl" else BLModel
 
+#List IP/Geo Entries
 class IpGeoList(Checker, Resource):
-    #Match List IP/Geo Entries
     @jwt_required
     def get(self):
         mod = self.type_test()
@@ -33,8 +40,8 @@ class IpGeoList(Checker, Resource):
             GeoLocations=[]
         )
 
+#List IP Entries
 class IpList(Checker, Resource):
-    #Match List IP Entries
     @jwt_required
     def get(self):
         mod = self.type_test()
@@ -46,8 +53,8 @@ class IpList(Checker, Resource):
             IPAddresses=mod.get_all_ip(),
         )
 
+#Search for List of Matching Entries
 class EntrySearch(Checker, Resource):
-    #Search for Matching Entry
     @jwt_required
     def get(self, filter):
         mod = self.type_test()
@@ -70,8 +77,8 @@ class EntrySearch(Checker, Resource):
             }
         )
 
+#Search for Specific Matching Entry
 class Entry(Checker, Resource):
-    #Search for Matching Entry
     @jwt_required
     def get(self, entry):
         mod = self.type_test()
@@ -93,12 +100,12 @@ class Entry(Checker, Resource):
             }
         )
 
+#Add entry to the Database
 class CreateIpEntry(Checker, Resource):
     @jwt_required
     def post(self):
         mod = self.type_test()
         data = parser.parse_args()
-        ip = ""
         ip = data["IPv4"] if data["IPv4"] else ""
         ip = data["IPv6"] if data["IPv6"] else ip
         if ip is "":
@@ -118,7 +125,7 @@ class CreateIpEntry(Checker, Resource):
             )
         new_ip = mod(ipv4 = data['IPv4'], ipv6 = data['IPv6'], start_date = data['Start_Date'],
             end_date = data['End_Date'], comments = data['Comments'], active = data["Active"])
-        new_ip.save_to_db()
+        new_ip.save()
         return jsonify(
                 Result = {
                         "Status":"Success",

@@ -8,12 +8,12 @@ class UserModel(db.Model):
     username = db.Column(db.String(120), unique = True, nullable = False)
     password = db.Column(db.String(120), nullable = False)
 
-    def save_to_db(self):
+    def save(self):
         db.session.add(self)
         db.session.commit()
 
     @classmethod
-    def find_by_username(cls, username):
+    def lookup_user(cls, username):
         return cls.query.filter_by(username = username).first()
 
     @staticmethod
@@ -36,7 +36,7 @@ class IPModel(db.Model):
     comments = db.Column(db.String(120), unique = False, nullable = True)
     active = db.Column(db.Boolean, unique = False, nullable = True)
 
-    def save_to_db(self):
+    def save(self):
         db.session.add(self)
         db.session.commit()
 

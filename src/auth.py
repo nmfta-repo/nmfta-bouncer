@@ -11,14 +11,15 @@ parser.add_argument("grant_type")
 
 
 #TESTING PURPOSSES ONLY!!!
+#Real user accounts will have to be created using normal methods
 class Register(Resource):
     def post(self):
         data = parser.parse_args()
-        if UserModel.find_by_username(data['username']):
+        if UserModel.lookup_user(data['username']):
             return jsonify(message='user already exists')
         new_user = UserModel(username = data['username'], password = UserModel.gen_hash(data['password']))
         try:
-            new_user.save_to_db()
+            new_user.save()
             return jsonify(message='all good with user creation')
         except Exception as e:
             print e
@@ -27,9 +28,9 @@ class Register(Resource):
 
 class Login(Resource):
     def post(self):
-        exp_time = timedelta(days=0,hours=0,minutes=1)
+        exp_time = timedelta(days=0,hours=0,minutes=10) #set token valid time to 10 minutes
         data = parser.parse_args()
-        user = UserModel.find_by_username(data['username'])
+        user = UserModel.lookup_user(data['username'])
         if not user:
             return jsonify(message='User does not exist')
 
