@@ -12,22 +12,23 @@ jwt = JWTManager(app)
 api = Api(app, prefix="/v{}".format(version))
 database.init_db(app)
 
-import auth, firewall
+import auth, whitelist, blacklist
 
 #add auth module
 api.add_resource(auth.Login, "/login")
 api.add_resource(auth.Register, "/register") #testing only
 
-#add firewall module
+#add firewall modules
 #add whitelist module
-api.add_resource(firewall.Whitelists, "/whitelists")
-api.add_resource(firewall.WhitelistsCreate, "/whitelists/create")
+api.add_resource(whitelist.Whitelists, "/whitelists")
+api.add_resource(whitelist.WhitelistsCreate, "/whitelists/create")
 #add blacklist module
-
+api.add_resource(blacklist.Blacklists, "/blacklists")
+api.add_resource(blacklist.BlacklistsCreate, "/blacklists/create")
 
 
 if __name__ == '__main__':
-  if "--clear" in sys.argv:
-    database.clear_data()
-    exit()
-  app.run(debug=True, port=8080)
+		if "--clear" in sys.argv:
+				database.clear_data()
+				exit()
+		app.run(debug=True, port=8080)
