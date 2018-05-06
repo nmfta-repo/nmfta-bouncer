@@ -2,6 +2,7 @@ from flask import Flask,jsonify
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
 from models import BLModel, WLModel
+#import netaddr
 
 parser = reqparse.RequestParser()
 parser.add_argument("IPv4", required=False)
@@ -45,6 +46,32 @@ class IpList(Checker, Resource):
             IPAddresses=mod.get_all_ip(),
         )
 
+class EntrySearch(Checker, Resource):
+    #Search for Matching Entry
+    @jwt_required
+    def get(self, filter):
+        mod = self.type_test()
+        search_results = []
+        search_ip = []
+        for ip in str(filter).split(","):
+            if "/" in ip:
+                #do cidr calc
+                pass
+            search_ip.append(ip)
+        for sip in search_ip:
+            t = mod.search(sip)
+            if t:
+                search_results.append(t)
+        return jsonify(
+            Result = {
+                "Status":"Success",
+                "Message":"Showing All Matching"
+            },
+            SearchResult = {
+                "Input_IP":filter,
+                "Entries":search_results
+            }
+        )
 
 class CreateIpEntry(Checker, Resource):
     @jwt_required
