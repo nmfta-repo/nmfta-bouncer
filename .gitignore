@@ -1,7 +1,1 @@
-bin/*
-include/*
-lib/*
-pip-selfcheck.json
-Pipfile.lock
-Pipfile
-src/database.db
+*/*
