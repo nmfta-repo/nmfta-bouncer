@@ -1,27 +1,22 @@
-import sys
 from flask import Flask
-from flask_restful import Resource, Api
+from flask_restful import Api
 from flask_jwt_extended import JWTManager
-from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
-import database
+from models import db
+import auth
+import firewall
 
 VERSION = 1
 
 #Initialize Flask API and Create DB
 APP = Flask(__name__)
+APP.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+APP.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+APP.config['SECRET_KEY'] = 'some-secret-string'	#should also probably change this
+db.init_app(APP)
+db.create_all(app=APP)
 APP.config['JWT_SECRET_KEY'] = 'jwt-secret-string' #should probably change this
 JWT = JWTManager(APP)
 API = Api(APP, prefix="/v{}".format(VERSION))
-database.init_db(APP)
-
-'''
-Import Auth and Firewall modules`
-#If we try to import them sooner, they do
-not have the DB built and crash
-'''
-
-import auth
-import firewall
 
 #Add resources and endpoints to facilitate RESTful paradigm
 
@@ -46,8 +41,4 @@ API.add_resource(firewall.CreateIpEntry, "/blacklists/create", resource_class_kw
 
 
 if __name__ == '__main__':
-    #dev feature to clear the database
-    if "--clear" in sys.argv:
-        database.clear_data()
-        exit()
     APP.run(debug=True, port=8080)

@@ -1,5 +1,7 @@
-from database import db
 from passlib.hash import sha256_crypt as sha256
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 class UserModel(db.Model):
     __tablename__ = 'users'
