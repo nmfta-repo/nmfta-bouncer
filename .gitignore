@@ -1,6 +1,5 @@
 *
-!src/**
-src/*.db
+!./src/
 !client_app.py
 !requirements.txt
 !.gitignore
