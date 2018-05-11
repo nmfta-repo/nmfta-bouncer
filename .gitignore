@@ -1,8 +1,6 @@
 *
 !src
-!src/*
-src/*.pyc
-src/*.db
+!src/*.py
 !client_app.py
 !requirements.txt
 !.gitignore
