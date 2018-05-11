@@ -1,1 +1,7 @@
-*/*
+*
+!/src/*
+/src/*.db
+!client_app.py
+!requirements.txt
+!.gitignore
+!README
