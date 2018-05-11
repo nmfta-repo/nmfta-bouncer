@@ -1,5 +1,5 @@
 *
-!src/
+!src/**
 src/*.db
 !client_app.py
 !requirements.txt
