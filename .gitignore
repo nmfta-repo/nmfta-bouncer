@@ -1,5 +1,6 @@
 *
-!./src/
+!src
+!src/*
 !client_app.py
 !requirements.txt
 !.gitignore
