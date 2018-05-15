@@ -1,22 +1,22 @@
 from passlib.hash import sha256_crypt as sha256
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+DB = SQLAlchemy()
 
-class UserModel(db.Model):
+class UserModel(DB.Model):
     __tablename__ = 'users'
 
-    id = db.Column(db.Integer, primary_key = True)
-    username = db.Column(db.String(120), unique = True, nullable = False)
-    password = db.Column(db.String(120), nullable = False)
+    id = DB.Column(DB.Integer, primary_key=True)
+    username = DB.Column(DB.String(120), unique=True, nullable=False)
+    password = DB.Column(DB.String(120), nullable=False)
 
     def save(self):
-        db.session.add(self)
-        db.session.commit()
+        DB.session.add(self)
+        DB.session.commit()
 
     @classmethod
     def lookup_user(cls, username):
-        return cls.query.filter_by(username = username).first()
+        return cls.query.filter_by(username=username).first()
 
     @staticmethod
     def gen_hash(password):
@@ -27,27 +27,27 @@ class UserModel(db.Model):
         return sha256.verify(password, hash)
 
 
-class IPModel(db.Model):
+class IPModel(DB.Model):
     __abstract__ = True
 
-    id = db.Column(db.Integer, primary_key = True)
-    ipv4 = db.Column(db.String(120), unique = True, nullable = True)
-    ipv6 = db.Column(db.String(120), unique = True, nullable = True)
-    start_date = db.Column(db.String(120), unique = False, nullable = True)
-    end_date = db.Column(db.String(120), unique = False, nullable = True)
-    comments = db.Column(db.String(120), unique = False, nullable = True)
-    active = db.Column(db.Boolean, unique = False, nullable = True)
+    id = DB.Column(DB.Integer, primary_key=True)
+    ipv4 = DB.Column(DB.String(120), unique=True, nullable=True)
+    ipv6 = DB.Column(DB.String(120), unique=True, nullable=True)
+    start_date = DB.Column(DB.String(120), unique=False, nullable=True)
+    end_date = DB.Column(DB.String(120), unique=False, nullable=True)
+    comments = DB.Column(DB.String(120), unique=False, nullable=True)
+    active = DB.Column(DB.Boolean, unique=False, nullable=True)
 
     def save(self):
-        db.session.add(self)
-        db.session.commit()
+        DB.session.add(self)
+        DB.session.commit()
 
     @classmethod
     def exists(cls, ip):
         if ":" in ip:
-            return cls.query.filter_by(ipv6 = ip).first()
+            return cls.query.filter_by(ipv6=ip).first()
         else:
-            return cls.query.filter_by(ipv4 = ip).first()
+            return cls.query.filter_by(ipv4=ip).first()
 
     @classmethod
     def get_all_ip(cls):
