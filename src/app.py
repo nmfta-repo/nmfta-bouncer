@@ -3,7 +3,7 @@
 from flask import Flask
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
-from models import db
+from models import DB
 import auth
 import firewall
 
@@ -14,8 +14,8 @@ APP = Flask(__name__)
 APP.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 APP.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 APP.config['SECRET_KEY'] = 'some-secret-string'	#should also probably change this
-db.init_app(APP)
-db.create_all(app=APP)
+DB.init_app(APP)
+DB.create_all(app=APP)
 APP.config['JWT_SECRET_KEY'] = 'jwt-secret-string' #should probably change this
 JWT = JWTManager(APP)
 API = Api(APP, prefix="/v{}".format(VERSION))
