@@ -1,9 +1,7 @@
 import requests, sys
-if len(sys.argv) < 2:
-    exit()
 
 api_version = "v1"
-host = sys.argv[1]
+host =  "http://localhost:8080" if len(sys.argv) < 2 else sys.argv[1]
 access_token = ""
 
 def login():
@@ -49,6 +47,7 @@ def show_ip_whitelists(access_token):
 
 def search_whitelists(access_token):
     filter = raw_input("Filter: ")
+    filter = filter.replace("/", "+")
     data = requests.get("{}/{}/whitelists/ipaddresses/filter/{}".format(host,api_version, filter),
         headers={"Authorization":"Bearer {}".format(access_token)}).json()
     print "Results",data["SearchResult"]["Entries"]

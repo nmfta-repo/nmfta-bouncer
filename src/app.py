@@ -35,7 +35,7 @@ API.add_resource(
     firewall.IpList, "/whitelists/ipaddresses",
     resource_class_kwargs={"ltype":"wl"}, endpoint="wl")
 API.add_resource(
-    firewall.EntrySearch, "/whitelists/ipaddresses/filter/<string:filter>",
+    firewall.EntrySearch, "/whitelists/ipaddresses/filter/<string:filter_term>",
     resource_class_kwargs={"ltype":"wl"}, endpoint="wlf")
 API.add_resource(
     firewall.Entry, "/whitelists/ipaddresses/<string:entry>",
