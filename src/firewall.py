@@ -1,7 +1,7 @@
 """Firewall module for the firewall app"""
 
 from flask import jsonify
-#import netaddr
+import netaddr
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required
 from models import BLModel, WLModel
@@ -23,7 +23,7 @@ class Checker(object): # pylint: disable=too-few-public-methods
     """
     def __init__(self, ltype):
         self.ltype = ltype
-    #check if request is WList or BList
+    """check if request is WList or BList"""
     def type_test(self):
         """Check if requester is looking for white/black list"""
         return WLModel if self.ltype == "wl" else BLModel
@@ -61,16 +61,23 @@ class EntrySearch(Checker, Resource):
     """EntrySearch Class"""
     @jwt_required
     def get(self, filter_term):
-        """Handles get EntrySearch requests"""
+        """Handles get EntrySearch requests
+        CIDR addresses need to be passed with # instead of /
+        as / breaks the REST implimentation"""
         mod = self.type_test()
         search_results = []
         for search_ip in str(filter_term).split(","):
-            if "/" in search_ip:
-                #do cidr calc
-                pass
-            found_ip = mod.search(search_ip)
-            if found_ip:
-                search_results.append(found_ip.ipv4)
+            if "+" in search_ip:
+                search_ip = search_ip.replace("+", "/")
+                for sub_ip in netaddr.IPNetwork(search_ip).iter_hosts():
+                    print str(sub_ip)
+                    found_ip = mod.search(str(sub_ip))
+                    if found_ip:
+                        search_results.append(found_ip.ipv4)
+            else:
+                found_ip = mod.search(search_ip)
+                if found_ip:
+                    search_results.append(found_ip.ipv4)
         return jsonify(
             Result={
                 "Status":"Success",
