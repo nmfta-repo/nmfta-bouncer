@@ -33,7 +33,7 @@ class Login(Resource):
         exp_time = timedelta(days=0, hours=0, minutes=10) #set token valid time to 10 minutes
         data = PARSER.parse_args()
         user = UserModel.lookup_user(data['username'])
-        if data['grant_type'] == 'password':
+        if data['grant_type'] != 'password':
             return jsonify(message='incorrect grant_type')
 
         if not user:
