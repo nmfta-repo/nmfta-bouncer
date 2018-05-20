@@ -70,7 +70,6 @@ class EntrySearch(Checker, Resource):
             if "+" in search_ip:
                 search_ip = search_ip.replace("+", "/")
                 for sub_ip in netaddr.IPNetwork(search_ip).iter_hosts():
-                    print str(sub_ip)
                     found_ip = mod.search(str(sub_ip))
                     if found_ip:
                         search_results.append(found_ip.ipv4)

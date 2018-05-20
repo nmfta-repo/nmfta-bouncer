@@ -80,6 +80,7 @@ def show_ip_blacklists(access_token):
 
 def search_blacklists(access_token):
     filter = raw_input("Filter: ")
+    filter = filter.replace("/", "+")
     data = requests.get("{}/{}/blacklists/ipaddresses/filter/{}".format(host,api_version, filter),
         headers={"Authorization":"Bearer {}".format(access_token)}).json()
     print "Results",data["SearchResult"]["Entries"]
