@@ -49,6 +49,10 @@ class IPModel(DB.Model):
         DB.session.add(self)
         DB.session.commit()
 
+    def delete(self):
+        DB.session.delete(self)
+        DB.session.commit(self)
+
     @classmethod
     def exists(cls, new_ip):
         if ":" in new_ip:
@@ -80,9 +84,23 @@ class IPModel(DB.Model):
             return cls.query.filter_by(ipv4=entry).first()
         return None
 
+class GeoModel(DB.Model):
+    __abstract__ = True
 
-class WLModel(IPModel):
+    id = DB.Column(DB.Integer, primary_key=True)
+
+    @classmethod
+    def get_all_geo(cls):
+        #placeholder function for all geo
+        return []
+
+    def save(self):
+        DB.session.add(self)
+        DB.session.commit()
+
+
+class WLModel(IPModel, GeoModel):
     __tablename__ = "whitelist"
 
-class BLModel(IPModel):
+class BLModel(IPModel, GeoModel):
     __tablename__ = "blacklist"
