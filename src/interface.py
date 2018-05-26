@@ -63,4 +63,4 @@ API.add_resource(
 
 
 if __name__ == '__main__':
-    APP.run(debug=True, port=8080)
+    APP.run(debug=True, port=8080, host="0.0.0.0")
