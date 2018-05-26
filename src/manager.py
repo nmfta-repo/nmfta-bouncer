@@ -1,4 +1,4 @@
-"""This module is the main app for the firewall"""
+"""This module is the manager app for the platform"""
 
 from flask import Flask
 from flask_restful import Api
@@ -7,11 +7,11 @@ from models import DB
 import auth
 import manage
 
-VERSION = 1
+VERSION = .2
 
 #Initialize Flask API and Create DB
 APP = Flask(__name__)
-APP.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+APP.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///firewall.db'
 APP.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 APP.config['SECRET_KEY'] = 'some-secret-string'	#should also probably change this
 DB.init_app(APP)
