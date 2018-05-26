@@ -1,6 +1,6 @@
 import requests, sys
 
-api_version = "v.2"
+api_version = "v2"
 host =  "http://localhost:8080" if len(sys.argv) < 2 else sys.argv[1]
 access_token = ""
 
