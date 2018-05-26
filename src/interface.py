@@ -7,7 +7,7 @@ from models import DB
 import auth
 import manage
 
-VERSION = .2
+VERSION = 2
 
 #Initialize Flask API and Create DB
 APP = Flask(__name__)
