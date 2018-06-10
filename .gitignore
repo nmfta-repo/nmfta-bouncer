@@ -2,6 +2,7 @@
 !src
 !src/*.py
 !client_app.py
+!gui_app.py
 !requirements.txt
 !.gitignore
 !README.md
