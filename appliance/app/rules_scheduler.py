@@ -3,9 +3,9 @@
 import sqlite3
 import os
 if os.getuid() == 0:
-    import iptc
+    import ufw_interface as ufw
 else:
-    print("Must be run as root to interact with iptables")
+    print("Must be run as root to interact with UFW")
     exit(-1)
 
 def print_rules(conn):
@@ -14,34 +14,19 @@ def print_rules(conn):
     dump_blacklists(conn)
 
 def do_rules(conn):
-    os.system("iptables --flush")
     cur = conn.execute("SELECT id, ipv4 FROM whitelist")
     print("Creating Whitelist Rules:")
     for row in cur:
         print("id", row[0], "ipv4", row[1])
-        rule = iptc.Rule()
-        rule.protocol = "tcp"
-        rule.src = row[1]
-        match = iptc.Match(rule, "tcp")
-        rule.add_match(match)
-        rule.add_match(match)
-        rule.target = iptc.Target(rule, "ACCEPT")
-        chain = iptc.Chain(iptc.Table(iptc.Table.FILTER), "INPUT")
-        chain.insert_rule(rule)
+        ufw.run("allow from {}".format(row[1]))
+
 
     cur = conn.execute("SELECT id, ipv4 FROM blacklist")
     print("Creating Blacklist Rules:")
     for row in cur:
         print("id", row[0], "ipv4", row[1])
-        rule = iptc.Rule()
-        rule.protocol = "tcp"
-        rule.src = row[1]
-        match = iptc.Match(rule, "tcp")
-        rule.add_match(match)
-        rule.add_match(match)
-        rule.target = iptc.Target(rule, "DROP")
-        chain = iptc.Chain(iptc.Table(iptc.Table.FILTER), "INPUT")
-        chain.insert_rule(rule)
+        ufw.run("deny from {}".format(row[1]))
+
 
 def dump_whitelists(conn):
     cur = conn.execute("SELECT id, ipv4 FROM whitelist")
@@ -56,7 +41,10 @@ def dump_blacklists(conn):
         print("id", row[0], "ipv4", row[1])
 
 def main():
-    conn = sqlite3.connect("src/firewall.db")
+    conn = sqlite3.connect("firewall.db")
+    ufw.allow(8080)
+    ufw.enable()
+    ufw.allow()
     do_rules(conn)
     #print_rules(conn)
 
