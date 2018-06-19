@@ -1,0 +1,5 @@
+[Unit]
+Description=Run Bouncer Firewall Rules Scheduler Service every minute
+
+[Timer]
+OnCalendar=*:0/1

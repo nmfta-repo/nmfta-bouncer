@@ -1,0 +1,6 @@
+[Unit]
+Description=Bouncer Firewall Rules Scheduler Service
+
+[Service]
+Type=oneshot
+ExecStart=/home/marcus/firewall/rules.sh

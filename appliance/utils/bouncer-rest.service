@@ -1,0 +1,11 @@
+[Unit]
+Description=Bouncer Firewall REST Interface Service
+After=multi-user.target
+
+[Service]
+Type=idle
+
+ExecStart=/home/marcus/firewall/start.sh
+
+[Install]
+WantedBy=multi-user.target

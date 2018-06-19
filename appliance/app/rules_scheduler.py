@@ -44,7 +44,6 @@ def main():
     conn = sqlite3.connect("firewall.db")
     ufw.allow(8080)
     ufw.enable()
-    ufw.allow()
     do_rules(conn)
     #print_rules(conn)
 
