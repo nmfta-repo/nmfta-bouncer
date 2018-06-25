@@ -4,19 +4,32 @@ from flask import Flask
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from models import DB
+import argparse
+import configparser
 import auth
 import manage
 
 VERSION = 2
 
+
+#Parse args and read config from configfile
+parser = argparse.ArgumentParser(description="REST API for bouncer")
+config = configparser.ConfigParser()
+parser.add_argument("--testing", help="Enable testing features")
+parser.add_argument("--config", help="Specify config file to read from",
+    default="/home/marcus/.bouncer/default.conf")
+args = parser.parse_args()
+config.read(args.config)
+
+
 #Initialize Flask API and Create DB
 APP = Flask(__name__)
-APP.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///firewall.db'
+APP.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+config['DEFAULT']['dbname']
 APP.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-APP.config['SECRET_KEY'] = 'some-secret-string'	#should also probably change this
+APP.config['SECRET_KEY'] = config['DEFAULT']['secretkey']
 DB.init_app(APP)
 DB.create_all(app=APP)
-APP.config['JWT_SECRET_KEY'] = 'jwt-secret-string' #should probably change this
+APP.config['JWT_SECRET_KEY'] = config['DEFAULT']['jwtsecretkey']
 JWT = JWTManager(APP)
 API = Api(APP, prefix="/v{}".format(VERSION))
 
@@ -24,7 +37,10 @@ API = Api(APP, prefix="/v{}".format(VERSION))
 
 #add auth module
 API.add_resource(auth.Login, "/login")
-API.add_resource(auth.Register, "/register") #testing only
+
+#enable testing features
+if args.testing:
+    API.add_resource(auth.Register, "/register")
 
 #add firewall modules
 #add whitelist module
@@ -63,4 +79,4 @@ API.add_resource(
 
 
 if __name__ == '__main__':
-    APP.run(debug=True, port=8080, host="0.0.0.0")
+    APP.run(debug=True, port=config['DEFAULT']['port'], host=config['DEFAULT']['listenip'])
