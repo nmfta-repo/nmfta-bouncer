@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 from tkinter import *
 import requests
 import sys

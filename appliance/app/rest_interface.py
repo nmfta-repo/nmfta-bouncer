@@ -15,7 +15,7 @@ VERSION = 2
 #Parse args and read config from configfile
 parser = argparse.ArgumentParser(description="REST API for bouncer")
 config = configparser.ConfigParser()
-parser.add_argument("--testing", help="Enable testing features")
+parser.add_argument("--testing", help="Enable testing features", action="store_true")
 parser.add_argument("--config", help="Specify config file to read from",
     default="/home/marcus/.bouncer/default.conf")
 args = parser.parse_args()
@@ -76,7 +76,6 @@ API.add_resource(
 API.add_resource(
     manage.CreateIpEntry, "/blacklists/create",
     resource_class_kwargs={"ltype":"bl"}, endpoint="blc")
-
 
 if __name__ == '__main__':
     APP.run(debug=True, port=config['DEFAULT']['port'], host=config['DEFAULT']['listenip'])
