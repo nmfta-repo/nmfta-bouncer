@@ -1,6 +1,7 @@
 #!/bin/bash
 
 rm -rf /home/marcus/.bouncer/
+rm /home/marcus/firewall/app/firewall.db
 mkdir /home/marcus/.bouncer/
 cp /home/marcus/firewall/default.conf /home/marcus/.bouncer/
 
@@ -10,5 +11,5 @@ cp /home/marcus/firewall/utils/bouncer-* /etc/systemd/system/
 
 systemctl enable bouncer-rest.service
 
-systemctl start bouncer-rest.service
-systemctl start bouncer-rules.timer
+systemctl restart bouncer-rest.service
+systemctl restart bouncer-rules.timer
