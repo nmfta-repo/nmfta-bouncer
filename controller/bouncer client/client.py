@@ -8,6 +8,8 @@ QApplication.setAttribute(PyQt5.QtCore.Qt.AA_EnableHighDpiScaling, True)
 api_version = "v2"
 access_token = ""
 
+app = QApplication(sys.argv)
+
 class LoginWindow(QDialog):
     def __init__(self, *args):
         username = ""
@@ -30,16 +32,24 @@ class LoginWindow(QDialog):
         host = "http://{}:{}".format(self.server, self.port)
         payload = (('username', self.username), ('password', self.password), ('grant_type', 'password'))
         try:
-            data = requests.post("{}/{}/login".format(host,api_version), data=payload).json()
+            data = requests.post("{}/{}/login".format(host,api_version), data=payload, timeout=1).json()
             if 'access_token' in data:
                 access_token = data['access_token']
                 self.statusLabel.setText("Good Login")
+                main.show()
+                self.close()
             else:
                 self.statusLabel.setText(data['message'])
         except:
             self.statusLabel.setText("Connection Failed")
 
-app = QApplication(sys.argv)
-widget = LoginWindow()
-widget.show()
-sys.exit(app.exec_())
+class MainWindow(QDialog):
+    def __init__(self, *args):
+        super(MainWindow, self).__init__(*args)
+        loadUi('main.ui', self)
+
+login = LoginWindow()
+main = MainWindow()
+login.show()
+app.exec_()
+sys.exit()
