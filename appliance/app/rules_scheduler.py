@@ -41,11 +41,12 @@ def dump_blacklists(conn):
         print("id", row[0], "ipv4", row[1])
 
 def main():
-    conn = sqlite3.connect("firewall.db")
+    #change location based on config
+    #probably a good thing to put in the config file
+    conn = sqlite3.connect("/home/marcus/firewall/app/firewall.db")
     ufw.allow(8080)
     ufw.enable()
     do_rules(conn)
-    #print_rules(conn)
 
 if __name__ == "__main__":
     main()

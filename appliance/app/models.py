@@ -51,7 +51,7 @@ class IPModel(DB.Model):
 
     def delete(self):
         DB.session.delete(self)
-        DB.session.commit(self)
+        DB.session.commit()
 
     @classmethod
     def exists(cls, new_ip):
