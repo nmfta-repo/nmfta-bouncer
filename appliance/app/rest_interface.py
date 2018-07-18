@@ -59,6 +59,9 @@ API.add_resource(
 API.add_resource(
     manage.CreateIpEntry, "/whitelists/create",
     resource_class_kwargs={"ltype":"wl"}, endpoint="wlc")
+API.add_resource(
+    manage.DeleteIpEntry, "/whitelists/delete",
+    resource_class_kwargs={"ltype":"wl"}, endpoint="wld")
 
 #add blacklist module
 API.add_resource(
@@ -76,6 +79,9 @@ API.add_resource(
 API.add_resource(
     manage.CreateIpEntry, "/blacklists/create",
     resource_class_kwargs={"ltype":"bl"}, endpoint="blc")
+API.add_resource(
+    manage.DeleteIpEntry, "/blacklists/delete",
+    resource_class_kwargs={"ltype":"bl"}, endpoint="bld")
 
 if __name__ == '__main__':
     APP.run(debug=True, port=config['DEFAULT']['port'], host=config['DEFAULT']['listenip'])

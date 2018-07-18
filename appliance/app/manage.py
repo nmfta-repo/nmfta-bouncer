@@ -171,7 +171,7 @@ class UpdateIpEntry(Checker, Resource):
 class DeleteIpEntry(Checker, Resource):
     """This method is used to delete a listed entry"""
     @jwt_required
-    def delete(self):
+    def post(self):
         """Handles delete DeleteIpEntry"""
         mod = self.type_test()
         data = PARSER.parse_args()
@@ -185,12 +185,16 @@ class DeleteIpEntry(Checker, Resource):
         if self.ltype is "bl" and BLModel.exists(entry_ip):
             BLModel.delete(BLModel.exists(entry_ip))
         elif self.ltype is "wl" and WLModel.exists(entry_ip):
-            WLModel.delete(entry_ip)
+            WLModel.delete(WLModel.exists(entry_ip))
         else:
             return jsonify(
                 Result={
                     "Status":"Invalid",
                     "Message":"IP Does Not Exist"})
+        return jsonify(
+            Result={
+                "Status":"Success",
+                "Message":"IP Deleted"})
 
 class GeoList(Checker, Resource):
     """This provides an array of listed Geolocation Entries"""
