@@ -26,7 +26,7 @@ class LoginWindow(QMainWindow):
         username = ""
         password = ""
         super(LoginWindow, self).__init__(*args)
-        loadUi('login.ui', self)
+        loadUi('resources/login.ui', self)
         if server is not "" and port is not "":
             self.serverInput.setText(server)
             self.portInput.setText(port)
@@ -69,7 +69,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self, *args):
         super(MainWindow, self).__init__(*args)
-        loadUi('main.ui', self)
+        loadUi('resources/main.ui', self)
         self.addButton.clicked.connect(self.addEntry)
         self.delButton.clicked.connect(self.delEntry)
         self.wlList.itemSelectionChanged.connect(self.itemSelected)
@@ -123,7 +123,7 @@ class EntryWindow(QDialog):
 
     def __init__(self, *args):
         super(EntryWindow, self).__init__(*args)
-        loadUi('add_entry.ui', self)
+        loadUi('resources/add_entry.ui', self)
         self.addButton.clicked.connect(self.addEntry)
 
     def addEntry(self):
