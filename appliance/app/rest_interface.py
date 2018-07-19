@@ -17,7 +17,7 @@ parser = argparse.ArgumentParser(description="REST API for bouncer")
 config = configparser.ConfigParser()
 parser.add_argument("--testing", help="Enable testing features", action="store_true")
 parser.add_argument("--config", help="Specify config file to read from",
-    default="/home/marcus/.bouncer/default.conf")
+    default="/opt/bouncer/default.conf")
 args = parser.parse_args()
 config.read(args.config)
 

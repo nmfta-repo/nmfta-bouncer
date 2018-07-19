@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python3 /home/marcus/firewall/app/rest_interface.py --testing
+python3 /opt/bouncer/app/rest_interface.py --testing
