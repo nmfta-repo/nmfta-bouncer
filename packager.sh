@@ -14,7 +14,7 @@ mkdir -p bouncer/opt/bouncer/utils
 
 cat > bouncer/DEBIAN/control << EOF
 Package:bouncer
-Version: 0.1
+Version: 1.0
 Maintainer: Drew Parker
 Architecture: all
 Depends: ufw
