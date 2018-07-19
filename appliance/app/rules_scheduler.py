@@ -1,7 +1,7 @@
 """Scheduler for platform"""
 
 import sqlite3
-import os
+import os, sys
 if os.getuid() == 0:
     import ufw_interface as ufw
 else:
@@ -43,7 +43,7 @@ def dump_blacklists(conn):
 def main():
     #change location based on config
     #probably a good thing to put in the config file
-    conn = sqlite3.connect("/home/marcus/firewall/app/firewall.db")
+    conn = sqlite3.connect(sys.argv[1])
     ufw.allow(8080)
     ufw.enable()
     do_rules(conn)
