@@ -1,7 +1,7 @@
 """Models for the firewall app database"""
 
-from passlib.hash import sha256_crypt as sha256
 from flask_sqlalchemy import SQLAlchemy
+import bcrypt
 
 DB = SQLAlchemy()
 
@@ -26,12 +26,13 @@ class UserModel(DB.Model):
     @staticmethod
     def gen_hash(password):
         """Securly hash the password to check"""
-        return sha256.hash(password)
+        hashed = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
+        return hashed
 
     @staticmethod
     def verify_hash(password, hash):
         """Verify password and stored password hash match"""
-        return sha256.verify(password, hash)
+        return bcrypt.hashpw(password.encode('utf8'), hash)
 
 
 class IPModel(DB.Model):

@@ -45,6 +45,7 @@ six==1.11.0
 SQLAlchemy==1.2.8
 urllib3==1.22
 Werkzeug==0.14.1
+bcrypt==3.1.4
 EOF
 
 cat > bouncer/DEBIAN/postinst << EOF
@@ -56,7 +57,8 @@ systemctl enable bouncer-rest.service > /dev/null
 systemctl enable bouncer-rules.timer > /dev/null
 systemctl start bouncer-rest.service > /dev/null
 systemctl start bouncer-rules.timer > /dev/null
-/usr/bin/pip3 install -r /opt/bouncer/pyreqs.txt
+echo "Installing python deps"
+/usr/bin/pip3 install -r /opt/bouncer/pyreqs.txt > /dev/null
 EOF
 
 chmod +x bouncer/DEBIAN/postinst
