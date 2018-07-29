@@ -1,7 +1,5 @@
 #!/bin/sh
 
-PY_DEPS="test"
-
 echo "Removing Old Build Dir"
 rm -rf bouncer/
 rm releases/bouncer.deb
