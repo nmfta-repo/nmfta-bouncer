@@ -36,9 +36,10 @@ class UserModel(DB.Model):
 
 
 class IPModel(DB.Model):
-    __abstract__ = True
+    __tablename__ = "iptable"
 
     id = DB.Column(DB.Integer, primary_key=True)
+    lt = DB.Column(DB.String(2), unique=False, nullable=False)
     ipv4 = DB.Column(DB.String(120), unique=True, nullable=True)
     ipv6 = DB.Column(DB.String(120), unique=True, nullable=True)
     start_date = DB.Column(DB.String(120), unique=False, nullable=True)
@@ -61,9 +62,10 @@ class IPModel(DB.Model):
         return cls.query.filter_by(ipv4=new_ip).first()
 
     @classmethod
-    def get_all_ip(cls):
+    def get_all_ip(cls, ltype):
         ips = set()
-        all_ip_objects = cls.query.order_by(cls.ipv6).all() + cls.query.order_by(cls.ipv4).all()
+        all_ip_objects = cls.query.filter_by(lt=ltype).order_by(cls.ipv6).all() +\
+            cls.query.filter_by(lt=ltype).order_by(cls.ipv4).all()
         for cur_ip in all_ip_objects:
             if not cur_ip.ipv4:
                 ips.add(cur_ip.ipv6)
@@ -73,9 +75,9 @@ class IPModel(DB.Model):
         return ret
 
     @classmethod
-    def search(cls, filter_exp):
+    def search(cls, filter_exp, ltype):
         if "." in filter_exp:
-            return cls.query.filter_by(ipv4=filter_exp).first()
+            return cls.query.filter_by(ipv4=filter_exp, lt=ltype).first()
         return None
 
 
@@ -86,22 +88,14 @@ class IPModel(DB.Model):
         return None
 
 class GeoModel(DB.Model):
-    __abstract__ = True
-
+    __tablename__ = "geotable"
     id = DB.Column(DB.Integer, primary_key=True)
 
     @classmethod
-    def get_all_geo(cls):
+    def get_all_geo(cls, ltype):
         #placeholder function for all geo
         return []
 
     def save(self):
         DB.session.add(self)
         DB.session.commit()
-
-
-class WLModel(IPModel, GeoModel):
-    __tablename__ = "whitelist"
-
-class BLModel(IPModel, GeoModel):
-    __tablename__ = "blacklist"
