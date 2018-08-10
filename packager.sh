@@ -21,29 +21,25 @@ Description: Project Bouncer Firewall Controller
 EOF
 
 cat > bouncer/opt/bouncer/pyreqs.txt << EOF
-aniso8601==3.0.0
-certifi==2018.4.16
-chardet==3.0.4
+aniso8601==3.0.2
+bcrypt==3.1.4
+cffi==1.11.5
 click==6.7
+configparser==3.5.0
 Flask==1.0.2
-Flask-JWT-Extended==3.10.0
+Flask-JWT-Extended==3.12.1
 Flask-RESTful==0.3.6
 Flask-SQLAlchemy==2.3.2
-idna==2.6
 itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
 netaddr==0.7.19
-passlib==1.7.1
+pycparser==2.18
 PyJWT==1.6.4
-python-iptables==0.13.0
-pytz==2018.4
-requests==2.18.4
+pytz==2018.5
 six==1.11.0
-SQLAlchemy==1.2.8
-urllib3==1.22
+SQLAlchemy==1.2.10
 Werkzeug==0.14.1
-bcrypt==3.1.4
 EOF
 
 cat > bouncer/DEBIAN/postinst << EOF
