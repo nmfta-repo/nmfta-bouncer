@@ -47,6 +47,7 @@ class IPModel(DB.Model):
     comments = DB.Column(DB.String(120), unique=False, nullable=True)
     active = DB.Column(DB.Boolean, unique=False, nullable=True)
     remove = DB.Column(DB.Boolean, unique=False, nullable=False)
+    geo = DB.Column(DB.Boolean, unique=False, nullable=False)
 
     def save(self):
         DB.session.add(self)
@@ -65,8 +66,8 @@ class IPModel(DB.Model):
     @classmethod
     def get_all_ip(cls, ltype):
         ips = set()
-        all_ip_objects = cls.query.filter_by(lt=ltype).order_by(cls.ipv6).all() +\
-            cls.query.filter_by(lt=ltype).order_by(cls.ipv4).all()
+        all_ip_objects = cls.query.filter_by(lt=ltype, geo=False).order_by(cls.ipv6).all() +\
+            cls.query.filter_by(lt=ltype, geo=False).order_by(cls.ipv4).all()
         for cur_ip in all_ip_objects:
             if not cur_ip.ipv4:
                 ips.add(str(cur_ip.id)+"#"+cur_ip.ipv6)
@@ -134,8 +135,49 @@ class GeoModel(DB.Model):
 
     @classmethod
     def get_all_geo(cls, ltype):
-        #placeholder function for all geo
-        return []
+        geos = set()
+        all_geo_objects = cls.query.filter_by(lt=ltype).order_by(cls.cc).all()
+        for cur_geo in all_geo_objects:
+            geos.add(str(cur_geo.id)+"#"+cur_geo.cc)
+        ret = list(geos) if geos else []
+        return ret
+
+    @classmethod
+    def exists(cls, ccode):
+        return cls.query.filter_by(cc=ccode).first()
+
+    @classmethod
+    def get_entry(cls, id, ltype):
+        info = cls.query.filter_by(id=id, lt=ltype).first()
+        if info:
+            return info
+        else:
+            return None
+
+    @classmethod
+    def update_entry(cls, id, data, ltype):
+        entry = cls.query.filter_by(id=id, lt=ltype).first()
+        if entry:
+            entry.lt=ltype
+            entry.cc = data['CountryCode']
+            entry.start_date=data['Start_Date']
+            entry.end_date=data['End_Date']
+            entry.comments=data['Comments']
+            entry.active=data["Active"]
+            DB.session.commit()
+            return entry.id
+        else:
+            return None
+
+    @classmethod
+    def delete_entry(cls, id, ltype):
+        entry = cls.query.filter_by(id=id, lt=ltype).first()
+        if entry:
+            entry.remove = True
+            DB.session.commit()
+            return entry.id
+        else:
+            return None
 
     def save(self):
         DB.session.add(self)
