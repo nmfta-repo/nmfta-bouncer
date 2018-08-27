@@ -55,11 +55,12 @@ class IpList(Checker, Resource):
 class SearchIpList(Checker, Resource):
     """This provides an end-point to look for the whitelisted IP Addresses.
     If a country code is passed, the list of all available IP Address Entries
-    for the passed in country code should be returned"""
+    for the passed in country code should be returned
+    shows IPs with entry_id in front"""
     @jwt_required
     def get(self, filter_term):
         """Handles get EntrySearch requests
-        CIDR addresses need to be passed with # instead of /
+        CIDR addresses need to be passed with + instead of /
         as / breaks the REST implimentation"""
         search_results = []
         for search_ip in str(filter_term).split(","):
@@ -68,18 +69,18 @@ class SearchIpList(Checker, Resource):
                 for sub_ip in netaddr.IPNetwork(search_ip).iter_hosts():
                     found_ip = IPModel.search(str(sub_ip), self.ltype)
                     if found_ip:
-                        search_results.append(found_ip.ipv4)
+                        search_results.append(str(found_ip.id)+"#"+found_ip.ipv4)
             else:
                 found_ip = IPModel.search(search_ip, self.ltype)
                 if found_ip:
-                    search_results.append(found_ip.ipv4)
+                    search_results.append(str(found_ip.id)+"#"+found_ip.ipv4)
         return jsonify(
             Result={
                 "Status":"Success",
                 "Message":"Showing All Matching"
             },
             SearchResult={
-                "Input_IP":filter_term,
+                "Input_IP":search_ip,
                 "Entries":search_results})
 
 class IpEntry(Checker, Resource):
@@ -87,8 +88,7 @@ class IpEntry(Checker, Resource):
     @jwt_required
     def get(self, entry):
         """Handles get Entry requests"""
-        mod = self.type_test()
-        info = IPModel.search(entry, self.ltype)
+        info = IPModel.get_entry(entry, self.ltype)
         if info is not None:
             return jsonify(
                 Result={
@@ -118,54 +118,52 @@ class CreateIpEntry(Checker, Resource):
                     "Status":"Invalid",
                     "Message":"Must enter IPv4 or IPv6 address"})
         #check if already in database
-        if IPModel.exists(entry_ip):
-            return jsonify(
-                Result={
-                    "Status":"Error",
-                    "Message":"IP exists in system"})
+
         new_ip = IPModel(lt=self.ltype, ipv4=data['IPv4'], ipv6=data['IPv6'], start_date=data['Start_Date'],
-                     end_date=data['End_Date'], comments=data['Comments'], active=data["Active"])
+                     end_date=data['End_Date'], comments=data['Comments'], active=data["Active"], remove=False)
         new_ip.save()
         return jsonify(
             Result={
                 "Status":"Success",
-                "Message":"IP Added"})
+                "Message":"IP Added",
+                "Entry ID":str(new_ip.id)})
 
 class UpdateIpEntry(Checker, Resource):
     """This method is used to update an existing list entry"""
     @jwt_required
-    def post(self):
+    def post(self, entry):
         """Handles post CreateIpEntry"""
+        data = PARSER.parse_args()
+        entry_id = IPModel.update_entry(entry, data, self.ltype)
+        if not entry:
+            return jsonify(
+                Result={
+                    "Status":"Error",
+                    "Message":"No Matching Entry"})
         return jsonify(
             Result={
-                "Status":"Failure",
-                "Message":"Not Implimented"})
+                "Status":"Success",
+                "Message":"IP Updated",
+                "Entry ID":str(entry_id)})
+
 
 class DeleteIpEntry(Checker, Resource):
     """This method is used to delete a listed entry"""
     @jwt_required
-    def post(self):
+    def get(self, entry):
         """Handles delete DeleteIpEntry"""
         data = PARSER.parse_args()
-        entry_ip = data["IPv4"] if data["IPv4"] else ""
-        entry_ip = data["IPv6"] if data["IPv6"] else entry_ip
-        if entry_ip == "":
+        entry_id = IPModel.delete_entry(entry, self.ltype)
+        if not entry:
             return jsonify(
                 Result={
-                    "Status":"Invalid",
-                    "Message":"Must enter IPv4 or IPv6 address"})
-        ip_query = IPModel.exists(entry_ip)
-        if ip_query:
-            IPModel.delete(ip_query)
-        else:
-            return jsonify(
-                Result={
-                    "Status":"Invalid",
-                    "Message":"IP Does Not Exist"})
+                    "Status":"Error",
+                    "Message":"No Matching Entry"})
         return jsonify(
             Result={
                 "Status":"Success",
-                "Message":"IP Deleted"})
+                "Message":"IP Deleted",
+                "Entry ID":str(entry_id)})
 
 class GeoList(Checker, Resource):
     """This provides an array of listed Geolocation Entries"""
