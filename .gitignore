@@ -1,3 +1,5 @@
 centurion.ova
 bouncer/*
 appliance/app/tester/*
+appliance/app/__pycache__/*
+appliance/app/firewall.db
