@@ -52,7 +52,7 @@ if test -z "$VIRTUAL_ENV_DISABLE_PROMPT"
         set -l old_status $status
 
         # Prompt override?
-        if test -n "(app) "
+        if test -n "(app) "            
             printf "%s%s" "(app) " (set_color normal)
         else
             # ...Otherwise, prepend env

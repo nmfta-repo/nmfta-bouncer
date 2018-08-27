@@ -57,10 +57,13 @@ API.add_resource(
     manage.IpEntry, "/whitelists/ipaddresses/<string:entry>",
     resource_class_kwargs={"ltype":"wl"}, endpoint="wle")
 API.add_resource(
-    manage.CreateIpEntry, "/whitelists/create",
+    manage.UpdateIpEntry, "/whitelists/ipaddresses/<string:entry>/update",
+    resource_class_kwargs={"ltype":"wl"}, endpoint="wleu")
+API.add_resource(
+    manage.CreateIpEntry, "/whitelists/ipaddresses/create",
     resource_class_kwargs={"ltype":"wl"}, endpoint="wlc")
 API.add_resource(
-    manage.DeleteIpEntry, "/whitelists/delete",
+    manage.DeleteIpEntry, "/whitelists/ipaddresses/<string:entry>/delete",
     resource_class_kwargs={"ltype":"wl"}, endpoint="wld")
 
 #add blacklist module

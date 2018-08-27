@@ -46,6 +46,7 @@ class IPModel(DB.Model):
     end_date = DB.Column(DB.String(120), unique=False, nullable=True)
     comments = DB.Column(DB.String(120), unique=False, nullable=True)
     active = DB.Column(DB.Boolean, unique=False, nullable=True)
+    remove = DB.Column(DB.Boolean, unique=False, nullable=False)
 
     def save(self):
         DB.session.add(self)
@@ -68,9 +69,9 @@ class IPModel(DB.Model):
             cls.query.filter_by(lt=ltype).order_by(cls.ipv4).all()
         for cur_ip in all_ip_objects:
             if not cur_ip.ipv4:
-                ips.add(cur_ip.ipv6)
+                ips.add(str(cur_ip.id)+"#"+cur_ip.ipv6)
             else:
-                ips.add(cur_ip.ipv4)
+                ips.add(str(cur_ip.id)+"#"+cur_ip.ipv4)
         ret = list(ips) if ips else []
         return ret
 
@@ -80,6 +81,39 @@ class IPModel(DB.Model):
             return cls.query.filter_by(ipv4=filter_exp, lt=ltype).first()
         return None
 
+    @classmethod
+    def get_entry(cls, id, ltype):
+        info = cls.query.filter_by(id=id, lt=ltype).first()
+        if info:
+            return info
+        else:
+            return None
+
+    @classmethod
+    def update_entry(cls, id, data, ltype):
+        entry = cls.query.filter_by(id=id, lt=ltype).first()
+        if entry:
+            entry.lt=ltype
+            entry.ipv4=data['IPv4']
+            entry.ipv6=data['IPv6']
+            entry.start_date=data['Start_Date']
+            entry.end_date=data['End_Date']
+            entry.comments=data['Comments']
+            entry.active=data["Active"]
+            DB.session.commit()
+            return entry.id
+        else:
+            return None
+
+    @classmethod
+    def delete_entry(cls, id, ltype):
+        entry = cls.query.filter_by(id=id, lt=ltype).first()
+        if entry:
+            entry.remove = True
+            DB.session.commit()
+            return entry.id
+        else:
+            return None
 
     @classmethod
     def get_info(cls, entry):

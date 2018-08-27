@@ -30,7 +30,9 @@ class Login(Resource):
     @classmethod
     def post(cls):
         """Handles post login requests"""
+        #RESET THIS SHIT BEFORE RELEASE!
         exp_time = timedelta(days=0, hours=0, minutes=10) #set token valid time to 10 minutes
+        exp_time = False
         data = PARSER.parse_args()
         user = UserModel.lookup_user(data['username'])
         if data['grant_type'] != 'password':
