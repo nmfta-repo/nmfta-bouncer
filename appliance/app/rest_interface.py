@@ -65,6 +65,21 @@ API.add_resource(
 API.add_resource(
     manage.DeleteIpEntry, "/whitelists/ipaddresses/<string:entry>/delete",
     resource_class_kwargs={"ltype":"wl"}, endpoint="wld")
+API.add_resource(
+    manage.GeoList, "/whitelists/geolocations",
+    resource_class_kwargs={"ltype":"wl"}, endpoint="wlg")
+API.add_resource(
+    manage.CreateGeoEntry, "/whitelists/geolocations/create",
+    resource_class_kwargs={"ltype":"wl"}, endpoint="wlgc")
+API.add_resource(
+    manage.GeoEntry, "/whitelists/geolocations/<string:entry>",
+    resource_class_kwargs={"ltype":"wl"}, endpoint="wlge")
+API.add_resource(
+    manage.UpdateGeoEntry, "/whitelists/geolocations/<string:entry>/update",
+    resource_class_kwargs={"ltype":"wl"}, endpoint="wlgu")
+API.add_resource(
+    manage.DeleteGeoEntry, "/whitelists/geolocations/<string:entry>/delete",
+    resource_class_kwargs={"ltype":"wl"}, endpoint="wlgd")
 
 #add blacklist module
 API.add_resource(
@@ -80,11 +95,26 @@ API.add_resource(
     manage.IpEntry, "/blacklists/ipaddresses/<string:entry>",
     resource_class_kwargs={"ltype":"bl"}, endpoint="ble")
 API.add_resource(
-    manage.CreateIpEntry, "/blacklists/create",
+    manage.CreateIpEntry, "/blacklists/ipaddresses/create",
     resource_class_kwargs={"ltype":"bl"}, endpoint="blc")
 API.add_resource(
-    manage.DeleteIpEntry, "/blacklists/delete",
+    manage.DeleteIpEntry, "/blacklists/ipaddresses/<string:entry>/delete",
     resource_class_kwargs={"ltype":"bl"}, endpoint="bld")
+API.add_resource(
+    manage.GeoList, "/blacklists/geolocations",
+    resource_class_kwargs={"ltype":"bl"}, endpoint="blg")
+API.add_resource(
+    manage.CreateGeoEntry, "/blacklists/geolocations/create",
+    resource_class_kwargs={"ltype":"bl"}, endpoint="blgc")
+API.add_resource(
+    manage.GeoEntry, "/blacklists/geolocations/<string:entry>",
+    resource_class_kwargs={"ltype":"bl"}, endpoint="blge")
+API.add_resource(
+    manage.UpdateGeoEntry, "/blacklists/geolocations/<string:entry>/update",
+    resource_class_kwargs={"ltype":"bl"}, endpoint="blgu")
+API.add_resource(
+    manage.DeleteGeoEntry, "/blacklists/geolocations/<string:entry>/delete",
+    resource_class_kwargs={"ltype":"bl"}, endpoint="blgd")
 
 if __name__ == '__main__':
     APP.run(debug=True, port=config['DEFAULT']['port'], host=config['DEFAULT']['listenip'])
