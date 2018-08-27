@@ -7,6 +7,7 @@ from flask_jwt_extended import jwt_required
 from models import IPModel, GeoModel
 
 PARSER = reqparse.RequestParser()
+PARSER.add_argument("CountryCode", required=False)
 PARSER.add_argument("IPv4", required=False)
 PARSER.add_argument("IPv6", required=False)
 PARSER.add_argument("Start_Date", required=False)
@@ -132,7 +133,7 @@ class UpdateIpEntry(Checker, Resource):
     """This method is used to update an existing list entry"""
     @jwt_required
     def post(self, entry):
-        """Handles post CreateIpEntry"""
+        """Handles post UpdateIpEntry"""
         data = PARSER.parse_args()
         entry_id = IPModel.update_entry(entry, data, self.ltype)
         if not entry:
@@ -177,3 +178,18 @@ class GeoList(Checker, Resource):
             },
             IPAddresses=GeoModel.get_all_geo(self.ltype),
         )
+
+class CreateGeoEntry(Checker, Resource):
+    """This creates GeoIP entries"""
+    @jwt_required
+    def post(self):
+        """Handles creation of GeoCreate requests"""
+        data = PARSER.parse_args()
+        new_geo = GeoModel(lt=self.ltype, cc=data['CountryCode'], start_date=data['Start_Date'],
+                    end_date=data['End_Date'], comments=data['Comments'], active=data["Active"], remove=False)
+        return jsonify(
+            Result={
+                "Status":"Success",
+                "Message":"Geo Added",
+                "Entry ID":str(new_geo.id)
+            })

@@ -124,6 +124,13 @@ class IPModel(DB.Model):
 class GeoModel(DB.Model):
     __tablename__ = "geotable"
     id = DB.Column(DB.Integer, primary_key=True)
+    cc = DB.Column(DB.String(2), unique=True, nullable=False)
+    lt = DB.Column(DB.String(2), unique=False, nullable=False)
+    start_date = DB.Column(DB.String(120), unique=False, nullable=True)
+    end_date = DB.Column(DB.String(120), unique=False, nullable=True)
+    comments = DB.Column(DB.String(120), unique=False, nullable=True)
+    active = DB.Column(DB.Boolean, unique=False, nullable=True)
+    remove = DB.Column(DB.Boolean, unique=False, nullable=False)
 
     @classmethod
     def get_all_geo(cls, ltype):
