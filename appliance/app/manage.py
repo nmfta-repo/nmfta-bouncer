@@ -162,7 +162,7 @@ class DeleteIpEntry(Checker, Resource):
         return jsonify(
             Result={
                 "Status":"Success",
-                "Message":"IP Deleted",
+                "Message":"IP Flagged For Deletion",
                 "Entry ID":str(entry_id)})
 
 class GeoList(Checker, Resource):
