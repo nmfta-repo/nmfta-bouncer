@@ -48,3 +48,10 @@ class Login(Resource):
                 claim_level="complete"
             )
         return jsonify(message='failed to log in')
+
+class BrokenHTTPS(Resource):
+    """BrokenHTTPS Class"""
+    @classmethod
+    def post(cls):
+        """Handles post login requests if a valid HTTPS cert isn't found"""
+        return jsonify(message='Valid HTTPS cert does not exist')
