@@ -210,7 +210,6 @@ class CreateGeoEntry(Checker, Resource):
                 net=s[3]
                 cidr=float(s[4])
                 ip4 = "%s/%d" % (net,(32-math.log(cidr,2)))
-                print(ip4)
                 new_ip = IPModel(lt=self.ltype, ipv4=ip4, geo=new_geo.id, remove=False)
                 new_ip.save()
 
