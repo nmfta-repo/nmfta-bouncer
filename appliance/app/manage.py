@@ -29,7 +29,7 @@ class Checker(object): # pylint: disable=too-few-public-methods
 class Lists(Checker, Resource):
     """This provides an array of whitelist (1...n) entries. The Whitelists
     should include both the IP Address Entries and Geolocation Entries"""
-    #@jwt_required
+    @jwt_required
     def get(self):
         """Handles get IpGeoList requests"""
         return jsonify(
@@ -222,7 +222,7 @@ class CreateGeoEntry(Checker, Resource):
 
 class GeoEntry(Checker, Resource):
     """This provides detail information about an individual whitelisted geo entry"""
-    jwt_required
+    @jwt_required
     def get(self, entry):
         """Handles get geo Entry requests"""
         info = GeoModel.get_entry(entry, self.ltype)
