@@ -32,7 +32,7 @@ class UserModel(DB.Model):
     @staticmethod
     def verify_hash(password, hash):
         """Verify password and stored password hash match"""
-        return bcrypt.hashpw(password.encode('utf8'), hash)
+        return hash == bcrypt.hashpw(password.encode('utf8'), hash)
 
 
 class IPModel(DB.Model):
