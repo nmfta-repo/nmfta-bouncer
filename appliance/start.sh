@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python3 /opt/bouncer/app/rest_interface.py
+python3 /opt/bouncer/src/rest_interface.py
