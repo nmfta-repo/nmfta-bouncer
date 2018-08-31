@@ -7,7 +7,7 @@ rm releases/bouncer.deb
 echo "Creating Relevant Directories"
 mkdir -p bouncer/DEBIAN
 mkdir -p bouncer/opt/bouncer
-mkdir -p bouncer/opt/bouncer/app
+mkdir -p bouncer/opt/bouncer/src
 mkdir -p bouncer/opt/bouncer/utils
 
 cat > bouncer/DEBIAN/control << EOF
@@ -53,6 +53,7 @@ systemctl start bouncer-rest.service > /dev/null
 systemctl start bouncer-rules.timer > /dev/null
 echo "Installing python deps"
 /usr/bin/pip3 install -r /opt/bouncer/pyreqs.txt > /dev/null
+openssl req -x509 -newkey rsa:4096 -nodes -out /opt/bouncer/dummy_cert.pem -keyout /opt/bouncer/dummy_key.pem -days 365 -subj="/C=US/ST=Denial/L=Default/O=Dis/CN=www.example.com"
 EOF
 
 chmod +x bouncer/DEBIAN/postinst
@@ -60,7 +61,7 @@ chmod +x bouncer/DEBIAN/postinst
 echo "Copying files"
 cp appliance/start.sh bouncer/opt/bouncer
 cp appliance/rules.sh bouncer/opt/bouncer
-cp appliance/app/* bouncer/opt/bouncer/app/
+cp appliance/src/* bouncer/opt/bouncer/src/
 cp appliance/utils/* bouncer/opt/bouncer/utils/
 cp appliance/default.conf bouncer/opt/bouncer
 
