@@ -1,6 +1,6 @@
 centurion.ova
-bouncer/*
 appliance/src/tester/*
 appliance/src/__pycache__/*
 appliance/src/firewall.db
 appliance/*.pem
+controller/*
