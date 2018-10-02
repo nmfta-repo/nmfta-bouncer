@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rsync -a -v --delete releases/bouncer.deb marcus@$1:~
+rsync -a -v --delete bouncer.deb marcus@$1:~

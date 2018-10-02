@@ -2,7 +2,6 @@
 
 echo "Removing Old Build Dir"
 rm -rf bouncer/
-rm releases/bouncer.deb
 
 echo "Creating Relevant Directories"
 mkdir -p bouncer/DEBIAN
@@ -67,7 +66,6 @@ cp appliance/default.conf bouncer/opt/bouncer
 
 echo "Building"
 dpkg-deb --build bouncer
-mkdir -p releases
-mv bouncer.deb releases/
+rm -rf bouncer/
 
 echo "Done"
