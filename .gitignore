@@ -1,4 +1,4 @@
-centurion.ova
+*.ova
 bouncer.deb
 appliance/src/tester/*
 appliance/src/__pycache__/*
