@@ -14,7 +14,7 @@ Package:bouncer
 Version: 1.0
 Maintainer: Drew Parker
 Architecture: all
-Depends: ufw
+Depends: ufw, python3-pip
 Depends-Build: python3-pip
 Description: Project Bouncer Firewall Controller
 EOF
@@ -51,7 +51,7 @@ systemctl enable bouncer-rules.timer > /dev/null
 systemctl start bouncer-rest.service > /dev/null
 systemctl start bouncer-rules.timer > /dev/null
 echo "Installing python deps"
-/usr/bin/pip3 install -r /opt/bouncer/pyreqs.txt > /dev/null
+/usr/bin/pip3 install -r /opt/bouncer/pyreqs.txt
 openssl req -x509 -newkey rsa:4096 -nodes -out /opt/bouncer/dummy_cert.pem -keyout /opt/bouncer/dummy_key.pem -days 365 -subj="/C=US/ST=Denial/L=Default/O=Dis/CN=www.example.com"
 EOF
 
