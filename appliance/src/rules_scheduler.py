@@ -49,10 +49,7 @@ def main():
     #probably a good thing to put in the config file
     conn = sqlite3.connect(sys.argv[1])
     ufw.allow(8080)
-<<<<<<< HEAD
     ufw.allow(22)
-=======
->>>>>>> d3ce74130c10ccc1af941f0eed3ef471b51b91b0
     ufw.enable()
     do_rules(conn)
 

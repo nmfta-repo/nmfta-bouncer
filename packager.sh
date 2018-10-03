@@ -14,11 +14,7 @@ Package:bouncer
 Version: 1.0
 Maintainer: Drew Parker
 Architecture: all
-<<<<<<< HEAD
 Depends: ufw, python3-pip
-=======
-Depends: ufw
->>>>>>> d3ce74130c10ccc1af941f0eed3ef471b51b91b0
 Depends-Build: python3-pip
 Description: Project Bouncer Firewall Controller
 EOF
