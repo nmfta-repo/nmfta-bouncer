@@ -9,8 +9,10 @@ import configparser
 import os
 import auth
 import manage
+import random
+import string
 
-VERSION = 2
+VERSION = 1
 
 
 #Parse args and read config from configfile
@@ -27,10 +29,10 @@ config.read(args.config)
 APP = Flask(__name__)
 APP.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+config['DEFAULT']['dbname']
 APP.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-APP.config['SECRET_KEY'] = config['DEFAULT']['secretkey']
+APP.config['SECRET_KEY'] = ''.join([random.choice(string.ascii_letters+string.digits) for n in range(32)])
 DB.init_app(APP)
 DB.create_all(app=APP)
-APP.config['JWT_SECRET_KEY'] = config['DEFAULT']['jwtsecretkey']
+APP.config['JWT_SECRET_KEY'] = ''.join([random.choice(string.ascii_letters+string.digits) for n in range(32)])
 JWT = JWTManager(APP)
 API = Api(APP, prefix="/v{}".format(VERSION))
 
