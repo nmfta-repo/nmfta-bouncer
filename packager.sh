@@ -46,13 +46,13 @@ cp /opt/bouncer/utils/bouncer-rest.service /etc/systemd/system/
 cp /opt/bouncer/utils/bouncer-rules.service /etc/systemd/system/
 cp /opt/bouncer/utils/bouncer-rules.timer /etc/systemd/system/
 chmod +x /opt/bouncer/*.sh
+echo "Installing python deps"
+/usr/bin/pip3 install -r /opt/bouncer/pyreqs.txt > /dev/null
+openssl req -x509 -newkey rsa:4096 -nodes -out /opt/bouncer/dummy_cert.pem -keyout /opt/bouncer/dummy_key.pem -days 365 -subj="/C=US/ST=Denial/L=Default/O=Dis/CN=localhost"
 systemctl enable bouncer-rest.service > /dev/null
 systemctl enable bouncer-rules.timer > /dev/null
 systemctl start bouncer-rest.service > /dev/null
 systemctl start bouncer-rules.timer > /dev/null
-echo "Installing python deps"
-/usr/bin/pip3 install -r /opt/bouncer/pyreqs.txt > /dev/null
-openssl req -x509 -newkey rsa:4096 -nodes -out /opt/bouncer/dummy_cert.pem -keyout /opt/bouncer/dummy_key.pem -days 365 -subj="/C=US/ST=Denial/L=Default/O=Dis/CN=www.example.com"
 EOF
 
 chmod +x bouncer/DEBIAN/postinst

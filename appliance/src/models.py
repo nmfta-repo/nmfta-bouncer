@@ -58,10 +58,10 @@ class IPModel(DB.Model):
         DB.session.commit()
 
     @classmethod
-    def exists(cls, new_ip):
+    def exists(cls, new_ip, ltype):
         if ":" in new_ip:
-            return cls.query.filter_by(ipv6=new_ip).first()
-        return cls.query.filter_by(ipv4=new_ip).first()
+            return cls.query.filter_by(ipv6=new_ip, lt=ltyp).first()
+        return cls.query.filter_by(ipv4=new_ip, lt=ltype).first()
 
     @classmethod
     def get_all_ip(cls, ltype):

@@ -1,5 +1,7 @@
 *.ova
 bouncer.deb
+uninstall.sh
+sync.sh
 centurion.ova
 appliance/src/tester/*
 appliance/src/__pycache__/*

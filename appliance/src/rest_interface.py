@@ -124,5 +124,6 @@ if os.path.isfile(config['DEFAULT']['keypath']) and os.path.isfile(config['DEFAU
     APP.run(ssl_context=(config['DEFAULT']['certpath'], config['DEFAULT']['keypath']), port=config['DEFAULT']['port'], host=config['DEFAULT']['listenip'])
 
 else:
+    print("Certs are not set correctly; disabling for security reasons")
     API.add_resource(auth.BrokenHTTPS, "/login")
     APP.run(port=config['DEFAULT']['port'], host=config['DEFAULT']['listenip'])

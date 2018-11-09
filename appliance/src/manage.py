@@ -3,6 +3,7 @@
 from flask import jsonify
 import netaddr
 import math
+import ipaddress
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required
 from models import IPModel, GeoModel
@@ -114,12 +115,31 @@ class CreateIpEntry(Checker, Resource):
         data = PARSER.parse_args()
         entry_ip = data["IPv4"] if data["IPv4"] else ""
         entry_ip = data["IPv6"] if data["IPv6"] else entry_ip
-        if entry_ip == "":
-            return jsonify(
-                Result={
-                    "Status":"Invalid",
-                    "Message":"Must enter IPv4 or IPv6 address"})
-        #check if already in database
+        try:
+            ipaddress.ip_address(entry_ip)
+        except:
+            if self.ltype is "wl":
+                return jsonify(Result={"Status":"Invalid","Error":"3001"})
+            else:
+                return jsonify(Result={"Status":"Invalid","Error":"4001"})
+
+        #check if IP exists in the system
+        if IPModel.exists(entry_ip, "wl"):
+            if self.ltype is "wl":
+                return jsonify(Result={"Status":"Failed","Error":"3008"})
+            else:
+                return jsonify(Result={"Status":"Failed","Error":"3009"})
+        if IPModel.exists(entry_ip, "bl"):
+            if self.ltype is "bl":
+                return jsonify(Result={"Status":"Failed","Error":"4008"})
+            else:
+                return jsonify(Result={"Status":"Failed","Error":"4009"})
+
+        if data['Start_Date'] > data['End_Date']:
+            if self.ltype is "wl":
+                return jsonify(Result={"Status":"Invalid","Error":"3006"})
+            else:
+                return jsonify(Result={"Status":"Invalid","Error":"4006"})
 
         new_ip = IPModel(lt=self.ltype, ipv4=data['IPv4'], ipv6=data['IPv6'], start_date=data['Start_Date'],
                      end_date=data['End_Date'], comments=data['Comments'], active=data["Active"], remove=False, geo=False)
