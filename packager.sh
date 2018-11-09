@@ -51,11 +51,7 @@ systemctl enable bouncer-rules.timer > /dev/null
 systemctl start bouncer-rest.service > /dev/null
 systemctl start bouncer-rules.timer > /dev/null
 echo "Installing python deps"
-<<<<<<< HEAD
-/usr/bin/pip3 install -r /opt/bouncer/pyreqs.txt
-=======
 /usr/bin/pip3 install -r /opt/bouncer/pyreqs.txt > /dev/null
->>>>>>> d3ce74130c10ccc1af941f0eed3ef471b51b91b0
 openssl req -x509 -newkey rsa:4096 -nodes -out /opt/bouncer/dummy_cert.pem -keyout /opt/bouncer/dummy_key.pem -days 365 -subj="/C=US/ST=Denial/L=Default/O=Dis/CN=www.example.com"
 EOF
 
