@@ -148,7 +148,7 @@ class CreateIpEntry(Checker, Resource):
             Result={
                 "Status":"Success",
                 "Message":"IP Added",
-                "Entry ID":str(new_ip.id)})
+                "EntryID":str(new_ip.id)})
 
 class UpdateIpEntry(Checker, Resource):
     """This method is used to update an existing list entry"""
@@ -166,7 +166,7 @@ class UpdateIpEntry(Checker, Resource):
             Result={
                 "Status":"Success",
                 "Message":"IP Updated",
-                "Entry ID":str(entry_id)})
+                "EntryID":str(entry_id)})
 
 
 class DeleteIpEntry(Checker, Resource):
@@ -185,7 +185,7 @@ class DeleteIpEntry(Checker, Resource):
             Result={
                 "Status":"Success",
                 "Message":"IP Flagged For Deletion",
-                "Entry ID":str(entry_id)})
+                "EntryID":str(entry_id)})
 
 class GeoList(Checker, Resource):
     """This provides an array of listed Geolocation Entries"""
@@ -237,7 +237,7 @@ class CreateGeoEntry(Checker, Resource):
             Result={
                 "Status":"Success",
                 "Message":"Geo Added",
-                "Entry ID":str(new_geo.id)
+                "EntryID":str(new_geo.id)
             })
 
 class GeoEntry(Checker, Resource):
@@ -277,7 +277,7 @@ class UpdateGeoEntry(Checker, Resource):
             Result={
                 "Status":"Success",
                 "Message":"Geo Updated",
-                "Entry ID":str(entry_id)})
+                "EntryID":str(entry_id)})
 
 class DeleteGeoEntry(Checker, Resource):
     """This method is used to delete a listed entry"""
@@ -295,4 +295,4 @@ class DeleteGeoEntry(Checker, Resource):
             Result={
                 "Status":"Success",
                 "Message":"Geo Flagged For Deletion",
-                "Entry ID":str(entry_id)})
+                "EntryID":str(entry_id)})
