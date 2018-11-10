@@ -135,12 +135,6 @@ class CreateIpEntry(Checker, Resource):
             else:
                 return jsonify(Result={"Status":"Failed","Error":"4009"})
 
-        if data['Start_Date'] > data['End_Date']:
-            if self.ltype is "wl":
-                return jsonify(Result={"Status":"Invalid","Error":"3006"})
-            else:
-                return jsonify(Result={"Status":"Invalid","Error":"4006"})
-
         new_ip = IPModel(lt=self.ltype, ipv4=data['IPv4'], ipv6=data['IPv6'], start_date=data['Start_Date'],
                      end_date=data['End_Date'], comments=data['Comments'], active=data["Active"], remove=False, geo=False)
         new_ip.save()

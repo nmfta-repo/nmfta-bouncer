@@ -1,6 +1,6 @@
 """This module is the manager app for the platform"""
 
-from flask import Flask
+from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from models import DB
@@ -30,11 +30,19 @@ APP = Flask(__name__)
 APP.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+config['DEFAULT']['dbname']
 APP.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 APP.config['SECRET_KEY'] = ''.join([random.choice(string.ascii_letters+string.digits) for n in range(32)])
+APP.config['PROPAGATE_EXCEPTIONS'] = True
 DB.init_app(APP)
 DB.create_all(app=APP)
 APP.config['JWT_SECRET_KEY'] = ''.join([random.choice(string.ascii_letters+string.digits) for n in range(32)])
 JWT = JWTManager(APP)
 API = Api(APP, prefix="/v{}".format(VERSION))
+
+@JWT.expired_token_loader
+def expired_callback():
+    return jsonify({
+        "Status":"TokenExpired",
+        "Error":"9999"
+    }), 200
 
 #Add resources and endpoints to facilitate RESTful paradigm
 
