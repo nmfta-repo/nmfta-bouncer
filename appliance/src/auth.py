@@ -17,8 +17,17 @@ class Register(Resource):
     def post(cls):
         """Handles post register requests"""
         data = PARSER.parse_args()
+        if data['username'] is None:
+            return jsonify(Result={"Status":"Invalid","Error":"1001"})
+        if len(data['username']) > 32:
+            return jsonify(Result={"Status":"Invalid","Error":"1004"})
+        if data['password'] is None:
+            return jsonify(Result={"Status":"Invalid","Error":"1002"})
+        if len(data['password']) is 0:
+            return jsonify(Result={"Status":"Invalid","Error":"1005"})
+
         if UserModel.lookup_user(data['username']):
-            return jsonify(message='user already exists')
+            return jsonify(Result={"Status":"Invalid","Error":"1003"})
         user = UserModel(
             username=data['username'],
             password=UserModel.gen_hash(data['password']))
@@ -30,21 +39,25 @@ class Login(Resource):
     @classmethod
     def post(cls):
         """Handles post login requests"""
-        exp_time = timedelta(days=0, hours=0, minutes=10) #set token valid time to 10 minutes
+        minutes_valid = 10
+        exp_time = timedelta(days=0, hours=0, minutes=minutes_valid) #set token valid time to 10 minutes
         data = PARSER.parse_args()
+        if not data['username']:
+            return jsonify(Result={"Status":"Invalid","Error":"2000"})
+        if not data['password']:
+            return jsonify(Result={"Status":"Invalid","Error":"2001"})
         user = UserModel.lookup_user(data['username'])
         if data['grant_type'] != 'password':
-            return jsonify(message='incorrect grant_type')
-
+            return jsonify(Result={"Status":"Invalid","Error":"2002"})
         if not user:
-            return jsonify(message='User does not exist')
+            return jsonify(Result={"Status":"Invalid","Error":"2003"})
 
         if UserModel.verify_hash(data['password'], user.password):
             access_token = create_access_token(identity=data['username'], expires_delta=exp_time)
             return jsonify(
                 access_token=access_token,
                 token_type="bearer",
-                expires_in=600,
+                expires_in=(minutes_valid*60),
                 claim_level="complete"
             )
         return jsonify(message='failed to log in')
