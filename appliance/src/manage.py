@@ -113,6 +113,7 @@ class CreateIpEntry(Checker, Resource):
     def post(self):
         """Handles post CreateIpEntry"""
         data = PARSER.parse_args()
+        active = True
         entry_ip = data["IPv4"] if data["IPv4"] else ""
         entry_ip = data["IPv6"] if data["IPv6"] else entry_ip
         try:
@@ -135,8 +136,13 @@ class CreateIpEntry(Checker, Resource):
             else:
                 return jsonify(Result={"Status":"Failed","Error":"4009"})
 
+        if data["Active"].lower() is "false" or data["Active"] is "0":
+            active = False
+        elif data["Active"].lower() is "true" or data["Active"] is "1":
+            active = True
+
         new_ip = IPModel(lt=self.ltype, ipv4=data['IPv4'], ipv6=data['IPv6'], start_date=data['Start_Date'],
-                     end_date=data['End_Date'], comments=data['Comments'], active=data["Active"], remove=False, geo=False)
+                     end_date=data['End_Date'], comments=data['Comments'], active=active, remove=False, geo=False)
         new_ip.save()
         return jsonify(
             Result={
@@ -211,6 +217,11 @@ class CreateGeoEntry(Checker, Resource):
                 Result={
                     "Status":"Error",
                     "Message":"ISO Exists in DB"})
+
+        if data["Active"].lower() is "false" or data["Active"] is "0":
+            active = False
+        elif data["Active"].lower() is "true" or data["Active"] is "1":
+            active = True
 
         new_geo = GeoModel(lt=self.ltype, cc=data['CountryCode'], start_date=data['Start_Date'],
                     end_date=data['End_Date'], comments=data['Comments'], active=data["Active"], remove=False)
