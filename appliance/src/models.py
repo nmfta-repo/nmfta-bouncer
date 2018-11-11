@@ -186,6 +186,7 @@ class GeoModel(DB.Model):
         entry = cls.query.filter_by(id=id, lt=ltype).first()
         if entry:
             entry.remove = True
+            entry.id = (entry.id*-1)
             DB.session.commit()
             return entry.id
         else:

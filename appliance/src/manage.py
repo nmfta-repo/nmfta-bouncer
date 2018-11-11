@@ -72,11 +72,11 @@ class SearchIpList(Checker, Resource):
                 for sub_ip in netaddr.IPNetwork(search_ip).iter_hosts():
                     found_ip = IPModel.search(str(sub_ip), self.ltype)
                     if found_ip:
-                        search_results.append(str(found_ip.id)+"#"+found_ip.ipv4)
+                        search_results.append((str(found_ip.id),found_ip.ipv4))
             else:
                 found_ip = IPModel.search(search_ip, self.ltype)
                 if found_ip:
-                    search_results.append(str(found_ip.id)+"#"+found_ip.ipv4)
+                    search_results.append((str(found_ip.id),found_ip.ipv4))
         return jsonify(
             Result={
                 "Status":"Success",

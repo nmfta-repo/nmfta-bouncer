@@ -102,7 +102,7 @@ if os.path.isfile(config['DEFAULT']['keypath']) and os.path.isfile(config['DEFAU
         manage.IpList, "/blacklists/ipaddresses",
         resource_class_kwargs={"ltype":"bl"}, endpoint="bl")
     API.add_resource(
-        manage.SearchIpList, "/blacklists/ipaddresses/filter/<string:filter>",
+        manage.SearchIpList, "/blacklists/ipaddresses/filter/<string:filter_term>",
         resource_class_kwargs={"ltype":"bl"}, endpoint="blf")
     API.add_resource(
         manage.IpEntry, "/blacklists/ipaddresses/<string:entry>",
