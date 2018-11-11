@@ -2,6 +2,7 @@
 bouncer.deb
 uninstall.sh
 sync.sh
+packager.sh
 centurion.ova
 appliance/src/tester/*
 appliance/src/__pycache__/*
