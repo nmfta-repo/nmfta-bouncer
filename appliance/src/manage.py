@@ -27,6 +27,35 @@ class Checker(object): # pylint: disable=too-few-public-methods
     def __init__(self, ltype):
         self.ltype = ltype
 
+class SimpleCheck(Checker, Resource):
+    @jwt_required
+    def get(self, entry):
+        """Handles get Entry requests"""
+        try:
+            ipaddress.ip_address(entry)
+        except:
+            if self.ltype is "wl":
+                return jsonify(Result={"Status":"Error","Message":"IP Invalid"})
+
+        wl = IPModel.search(entry, "wl")
+        bl = IPModel.search(entry, "bl")
+        if bl is None and wl is None:
+            return jsonify(Result={"Status":"Success","Message":"No Matching Entry"})
+
+        info = wl if wl else bl
+        ltype = "Whitelist" if wl else "Blacklist"
+        return jsonify(
+            Result={
+                "Status":"Success",
+                "Message":"Showing Matching Entry",
+                "List":ltype
+            },
+            Entry={
+                "IPv4":info.ipv4, "IPv6":info.ipv6, "Start_Date":info.start_date,
+                "End_Date":info.end_date, "Comments":info.comments, "Active":info.active}
+        )
+
+
 class Lists(Checker, Resource):
     """This provides an array of whitelist (1...n) entries. The Whitelists
     should include both the IP Address Entries and Geolocation Entries"""
@@ -87,7 +116,7 @@ class SearchIpList(Checker, Resource):
                 "Entries":search_results})
 
 class IpEntry(Checker, Resource):
-    """This provides detail information about an individual whitelisted entry"""
+    """This provides detail information about an individual entry"""
     @jwt_required
     def get(self, entry):
         """Handles get Entry requests"""

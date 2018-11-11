@@ -55,6 +55,9 @@ if os.path.isfile(config['DEFAULT']['keypath']) and os.path.isfile(config['DEFAU
     if args.testing:
         API.add_resource(auth.Register, "/register")
 
+    API.add_resource(manage.SimpleCheck, "/check/<string:entry>",
+        resource_class_kwargs={"ltype":"wl"})
+
     #add firewall modules
     #add whitelist module
     API.add_resource(
