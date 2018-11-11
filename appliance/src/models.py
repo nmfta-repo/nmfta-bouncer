@@ -70,9 +70,9 @@ class IPModel(DB.Model):
             cls.query.filter_by(lt=ltype, geo=False).order_by(cls.ipv4).all()
         for cur_ip in all_ip_objects:
             if not cur_ip.ipv4:
-                ips.add(str(cur_ip.id)+"#"+cur_ip.ipv6)
+                ips.add((str(cur_ip.id), cur_ip.ipv6))
             else:
-                ips.add(str(cur_ip.id)+"#"+cur_ip.ipv4)
+                ips.add((str(cur_ip.id), cur_ip.ipv4))
         ret = list(ips) if ips else []
         return ret
 
