@@ -206,6 +206,7 @@ class CreateGeoEntry(Checker, Resource):
     def post(self):
         """Handles creation of GeoCreate requests"""
         data = PARSER.parse_args()
+        active = True
         if not data['CountryCode']:
             return jsonify(
                 Result={
@@ -224,7 +225,7 @@ class CreateGeoEntry(Checker, Resource):
             active = True
 
         new_geo = GeoModel(lt=self.ltype, cc=data['CountryCode'], start_date=data['Start_Date'],
-                    end_date=data['End_Date'], comments=data['Comments'], active=data["Active"], remove=False)
+                    end_date=data['End_Date'], comments=data['Comments'], active=active, remove=False)
         new_geo.save()
 
         f = open("geolist.txt")
