@@ -1,8 +1,8 @@
 *.ova
 uninstall.sh
 sync.sh
-packager.sh
 centurion.ova
+bouncer.deb
 appliance/src/tester/*
 appliance/src/__pycache__/*
 appliance/src/firewall.db
