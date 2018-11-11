@@ -1,15 +1,12 @@
-## Firewall NMFTA Project
+## NMFTA's Project Bouncer
+
+![alt text](https://raw.githubusercontent.com/reap3r/nmfta-bouncer/master/firewall-final.png)
+
 
 This is the README for the Bouncer Project.
 
-Once I get things into a more finalized state, this will turn into more of a howto. Until then, a feature list:
+This API has implimented features for IP and Geo Location based blocking.
+It operates through the UFW firewall.
+Changes that are made to the firewall's databawse are implimented every minute.
 
-* Basic IPv4 application functionality
-  * Implemented with a UFW interface
-  * Managed through REST API
-  * Full CRUD features working for IPv4 hosts
-* A very functional, if basic, GUI app
-  * Hasn't been stress tested
-  * Mostly for dev purposes
-
-A lot of the stuff is currently setup to run on my specific lab setup, but it shouldn't be very hard to tweak to get running on any server.
+There is no admin or valid user account to start with. Add the --testing flag in the start.sh scrip to enable the registraion page.
