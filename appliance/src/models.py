@@ -169,6 +169,12 @@ class GeoModel(DB.Model):
             entry.start_date=data['Start_Date']
             entry.end_date=data['End_Date']
             entry.comments=data['Comments']
+            active = entry.active
+            if data["Active"]:
+                if data["Active"].lower() is "false" or data["Active"] is "0":
+                    active = False
+                elif data["Active"].lower() is "true" or data["Active"] is "1":
+                    active = True
             entry.active=data["Active"]
             DB.session.commit()
             return entry.id

@@ -173,7 +173,7 @@ class UpdateIpEntry(Checker, Resource):
 class DeleteIpEntry(Checker, Resource):
     """This method is used to delete a listed entry"""
     @jwt_required
-    def get(self, entry):
+    def delete(self, entry):
         """Handles delete DeleteIpEntry"""
         data = PARSER.parse_args()
         entry_id = IPModel.delete_entry(entry, self.ltype)
@@ -185,7 +185,7 @@ class DeleteIpEntry(Checker, Resource):
         return jsonify(
             Result={
                 "Status":"Success",
-                "Message":"IP Flagged For Deletion",
+                "Message":"IP Deleted",
                 "EntryID":str(entry_id)})
 
 class GeoList(Checker, Resource):
@@ -290,7 +290,7 @@ class UpdateGeoEntry(Checker, Resource):
 class DeleteGeoEntry(Checker, Resource):
     """This method is used to delete a listed entry"""
     @jwt_required
-    def get(self, entry):
+    def DELETE(self, entry):
         """Handles delete DeleteGeoEntry"""
         data = PARSER.parse_args()
         entry_id = GeoModel.delete_entry(entry, self.ltype)
@@ -302,5 +302,5 @@ class DeleteGeoEntry(Checker, Resource):
         return jsonify(
             Result={
                 "Status":"Success",
-                "Message":"Geo Flagged For Deletion",
+                "Message":"Geo Deleted",
                 "EntryID":str(entry_id)})
