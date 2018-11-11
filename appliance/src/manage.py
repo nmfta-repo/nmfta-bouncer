@@ -149,8 +149,12 @@ class CreateIpEntry(Checker, Resource):
             ipaddress.ip_address(entry_ip)
         except:
             if self.ltype is "wl":
+                if not entry_ip:
+                    return jsonify(Result={"Status":"Invalid","Error":"3000"})
                 return jsonify(Result={"Status":"Invalid","Error":"3001"})
             else:
+                if not entry_ip:
+                    return jsonify(Result={"Status":"Invalid","Error":"4000"})
                 return jsonify(Result={"Status":"Invalid","Error":"4001"})
 
         #check if IP exists in the system
@@ -170,6 +174,12 @@ class CreateIpEntry(Checker, Resource):
                 active = False
             elif data["Active"].lower() is "true" or data["Active"] is "1":
                 active = True
+
+        if len(data['Comments']) > 3000:
+            if self.ltype is "wl":
+                return jsonify(Result={"Status":"Invalid","Error":"3007"})
+            else:
+                return jsonify(Result={"Status":"Invalid","Error":"4007"})
 
         new_ip = IPModel(lt=self.ltype, ipv4=data['IPv4'], ipv6=data['IPv6'], start_date=data['Start_Date'],
                      end_date=data['End_Date'], comments=data['Comments'], active=active, remove=False, geo=False)
@@ -204,13 +214,17 @@ class DeleteIpEntry(Checker, Resource):
     @jwt_required
     def delete(self, entry):
         """Handles delete DeleteIpEntry"""
-        data = PARSER.parse_args()
-        entry_id = IPModel.delete_entry(entry, self.ltype)
         if not entry:
-            return jsonify(
-                Result={
-                    "Status":"Error",
-                    "Message":"No Matching Entry"})
+            if self.ltype is "wl":
+                return jsonify(Result={"Status":"Invalid","Error":"5000"})
+            else:
+                return jsonify(Result={"Status":"Invalid","Error":"6000"})
+        entry_id = IPModel.delete_entry(entry, self.ltype)
+        if not entry_id:
+            if self.ltype is "wl":
+                return jsonify(Result={"Status":"Invalid","Error":"5001"})
+            else:
+                return jsonify(Result={"Status":"Invalid","Error":"6001"})
         return jsonify(
             Result={
                 "Status":"Success",
