@@ -1,5 +1,4 @@
 *.ova
-bouncer.deb
 uninstall.sh
 sync.sh
 packager.sh
