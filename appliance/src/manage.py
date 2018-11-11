@@ -154,7 +154,7 @@ class CreateIpEntry(Checker, Resource):
 class UpdateIpEntry(Checker, Resource):
     """This method is used to update an existing list entry"""
     @jwt_required
-    def post(self, entry):
+    def put(self, entry):
         """Handles post UpdateIpEntry"""
         data = PARSER.parse_args()
         entry_id = IPModel.update_entry(entry, data, self.ltype)
