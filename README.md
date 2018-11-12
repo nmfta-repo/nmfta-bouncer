@@ -1,6 +1,6 @@
 ## NMFTA's Project Bouncer
 
-![alt text](https://raw.githubusercontent.com/reap3r/nmfta-bouncer/master/firewall-final.png)
+![alt text](https://raw.githubusercontent.com/reap3r/nmfta-bouncer/master/icon.png)
 
 
 This is the README for the Bouncer Project.
