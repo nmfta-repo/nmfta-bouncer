@@ -1,7 +1,7 @@
 """Scheduler for platform"""
 
 import sqlite3
-import os, sys
+import os, sys, configparser, argparse
 if os.getuid() == 0:
     import ufw_interface as ufw
 else:
@@ -45,11 +45,14 @@ def dump_blacklists(conn):
         print("id", row[0], "ipv4", row[1])
 
 def main():
-    #change location based on config
-    #probably a good thing to put in the config file
-    conn = sqlite3.connect(sys.argv[1])
-    ufw.allow(8080)
-    ufw.allow(22)
+    parser = argparse.ArgumentParser(description="Rules engine for bouncer")
+    config = configparser.ConfigParser()
+    parser.add_argument("--config", help="Specify config file to read from",
+        default="/opt/bouncer/default.conf")
+    args = parser.parse_args()
+    config.read(args.config)
+    conn = sqlite3.connect(config['DEFAULT']['dbname'])
+    ufw.allow(config['DEFAULT']['port'])
     ufw.enable()
     do_rules(conn)
 
