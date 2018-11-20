@@ -1,4 +1,4 @@
-"""Models for the firewall app database"""
+"""Models for the firewall appliance database"""
 
 from flask_sqlalchemy import SQLAlchemy
 import bcrypt
