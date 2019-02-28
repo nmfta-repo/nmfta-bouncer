@@ -1,6 +1,6 @@
 ## NMFTA's Project Bouncer
 
-![alt text](https://raw.githubusercontent.com/reap3r/nmfta-bouncer/master/icon.png)
+![alt text](https://raw.githubusercontent.com/nmfta-repo/nmfta-bouncer/master/project-bouncer-small.png)
 
 
 This is the README for the Bouncer Project.
