@@ -35,12 +35,12 @@ class SimpleCheck(Checker, Resource):
             ipaddress.ip_address(entry)
         except:
             if self.ltype is "wl":
-                return jsonify(Result={"Status":"Error","Message":"IP Invalid"})
+                return jsonify(Result={"Status":"Error","Message":"IP Invalid"}), 400
 
         wl = IPModel.search(entry, "wl")
         bl = IPModel.search(entry, "bl")
         if bl is None and wl is None:
-            return jsonify(Result={"Status":"Success","Message":"No Matching Entry"})
+            return jsonify(Result={"Status":"Success","Message":"No Matching Entry"}), 400
 
         info = wl if wl else bl
         ltype = "Whitelist" if wl else "Blacklist"
@@ -134,7 +134,7 @@ class IpEntry(Checker, Resource):
         return jsonify(
             Result={
                 "Status":"Error",
-                "Message":"No Matching Entry"})
+                "Message":"No Matching Entry"}), 400
 
 class CreateIpEntry(Checker, Resource):
     """This method is used to add a whitelist entry"""
@@ -150,24 +150,24 @@ class CreateIpEntry(Checker, Resource):
         except:
             if self.ltype is "wl":
                 if not entry_ip:
-                    return jsonify(Result={"Status":"Invalid","Error":"3000"})
-                return jsonify(Result={"Status":"Invalid","Error":"3001"})
+                    return jsonify(Result={"Status":"Invalid","Error":"3000"}), 400
+                return jsonify(Result={"Status":"Invalid","Error":"3001"}), 400
             else:
                 if not entry_ip:
-                    return jsonify(Result={"Status":"Invalid","Error":"4000"})
-                return jsonify(Result={"Status":"Invalid","Error":"4001"})
+                    return jsonify(Result={"Status":"Invalid","Error":"4000"}), 400
+                return jsonify(Result={"Status":"Invalid","Error":"4001"}), 400
 
         #check if IP exists in the system
         if IPModel.exists(entry_ip, "wl"):
             if self.ltype is "wl":
-                return jsonify(Result={"Status":"Failed","Error":"3008"})
+                return jsonify(Result={"Status":"Failed","Error":"3008"}), 400
             else:
-                return jsonify(Result={"Status":"Failed","Error":"3009"})
+                return jsonify(Result={"Status":"Failed","Error":"3009"}), 400
         if IPModel.exists(entry_ip, "bl"):
             if self.ltype is "bl":
-                return jsonify(Result={"Status":"Failed","Error":"4008"})
+                return jsonify(Result={"Status":"Failed","Error":"4008"}), 400
             else:
-                return jsonify(Result={"Status":"Failed","Error":"4009"})
+                return jsonify(Result={"Status":"Failed","Error":"4009"}), 400
 
         if data["Active"]:
             if data["Active"].lower() is "false" or data["Active"] is "0":
@@ -177,9 +177,9 @@ class CreateIpEntry(Checker, Resource):
 
         if len(data['Comments']) > 3000:
             if self.ltype is "wl":
-                return jsonify(Result={"Status":"Invalid","Error":"3007"})
+                return jsonify(Result={"Status":"Invalid","Error":"3007"}), 400
             else:
-                return jsonify(Result={"Status":"Invalid","Error":"4007"})
+                return jsonify(Result={"Status":"Invalid","Error":"4007"}), 400
 
         new_ip = IPModel(lt=self.ltype, ipv4=data['IPv4'], ipv6=data['IPv6'], start_date=data['Start_Date'],
                      end_date=data['End_Date'], comments=data['Comments'], active=active, remove=False, geo=False)
@@ -201,7 +201,7 @@ class UpdateIpEntry(Checker, Resource):
             return jsonify(
                 Result={
                     "Status":"Error",
-                    "Message":"No Matching Entry"})
+                    "Message":"No Matching Entry"}), 400
         return jsonify(
             Result={
                 "Status":"Success",
@@ -216,15 +216,15 @@ class DeleteIpEntry(Checker, Resource):
         """Handles delete DeleteIpEntry"""
         if not entry:
             if self.ltype is "wl":
-                return jsonify(Result={"Status":"Invalid","Error":"5000"})
+                return jsonify(Result={"Status":"Invalid","Error":"5000"}), 400
             else:
-                return jsonify(Result={"Status":"Invalid","Error":"6000"})
+                return jsonify(Result={"Status":"Invalid","Error":"6000"}), 400
         entry_id = IPModel.delete_entry(entry, self.ltype)
         if not entry_id:
             if self.ltype is "wl":
-                return jsonify(Result={"Status":"Invalid","Error":"5001"})
+                return jsonify(Result={"Status":"Invalid","Error":"5001"}), 400
             else:
-                return jsonify(Result={"Status":"Invalid","Error":"6001"})
+                return jsonify(Result={"Status":"Invalid","Error":"6001"}), 400
         return jsonify(
             Result={
                 "Status":"Success",
@@ -255,13 +255,13 @@ class CreateGeoEntry(Checker, Resource):
             return jsonify(
                 Result={
                     "Status":"Error",
-                    "Message":"Valid ISO required"})
+                    "Message":"Valid ISO required"}), 400
 
         if GeoModel.exists(data['CountryCode']):
             return jsonify(
                 Result={
                     "Status":"Error",
-                    "Message":"ISO Exists in DB"})
+                    "Message":"ISO Exists in DB"}), 400
 
         if data["Active"]:
             if data["Active"].lower() is "false" or data["Active"] is "0":
@@ -310,7 +310,7 @@ class GeoEntry(Checker, Resource):
         return jsonify(
             Result={
                 "Status":"Error",
-                "Message":"No Matching Entry"})
+                "Message":"No Matching Entry"}), 400
 
 class UpdateGeoEntry(Checker, Resource):
     """This method is used to update an existing list entry"""
@@ -323,7 +323,7 @@ class UpdateGeoEntry(Checker, Resource):
             return jsonify(
                 Result={
                     "Status":"Error",
-                    "Message":"No Matching Entry"})
+                    "Message":"No Matching Entry"}), 400
         return jsonify(
             Result={
                 "Status":"Success",
@@ -341,7 +341,7 @@ class DeleteGeoEntry(Checker, Resource):
             return jsonify(
                 Result={
                     "Status":"Error",
-                    "Message":"No Matching Entry"})
+                    "Message":"No Matching Entry"}), 400
         return jsonify(
             Result={
                 "Status":"Success",

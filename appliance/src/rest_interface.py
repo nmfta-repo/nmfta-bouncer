@@ -43,7 +43,7 @@ def expired_callback():
     return jsonify({
         "Status":"TokenExpired",
         "Error":"9999"
-    }), 200
+    }), 400
 
 #Add resources and endpoints to facilitate RESTful paradigm
 
