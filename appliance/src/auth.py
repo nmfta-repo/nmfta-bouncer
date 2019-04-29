@@ -48,7 +48,7 @@ class Login(Resource):
             return jsonify(Result={"Status":"Invalid","Error":"2001"})
         user = UserModel.lookup_user(data['username'])
         if data['grant_type'] != 'password':
-            return jsonify(Result={"Status":"Invalid","Error":"2002"})
+            return jsonify(Result={"Status":"Invalid","Error":"2003"})
         if not user:
             return jsonify(Result={"Status":"Invalid","Error":"2003"})
 
