@@ -60,7 +60,7 @@ class Login(Resource):
                 expires_in=(minutes_valid*60),
                 claim_level="complete"
             )
-        return jsonify(message='failed to log in')
+        return jsonify(Result={"Status":"Invalid","Error":"2003"})
 
 class BrokenHTTPS(Resource):
     """BrokenHTTPS Class"""
