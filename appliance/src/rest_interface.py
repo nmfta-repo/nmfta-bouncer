@@ -1,6 +1,6 @@
 """This module is the manager app for the platform"""
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, make_response
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from models import DB
@@ -40,10 +40,10 @@ API = Api(APP, prefix="/v{}".format(VERSION))
 
 @JWT.expired_token_loader
 def expired_callback():
-    return jsonify({
+    return make_response(jsonify({
         "Status":"TokenExpired",
         "Error":"9999"
-    }), 400
+    }), 400)
 
 #Add resources and endpoints to facilitate RESTful paradigm
 

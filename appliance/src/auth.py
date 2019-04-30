@@ -1,7 +1,7 @@
 """Auth module for the firewall app"""
 
 from datetime import timedelta
-from flask import jsonify
+from flask import jsonify, make_response
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import (create_access_token)
 from models import UserModel
@@ -18,16 +18,16 @@ class Register(Resource):
         """Handles post register requests"""
         data = PARSER.parse_args()
         if data['username'] is None:
-            return jsonify(Result={"Status":"Invalid","Error":"1001"}), 400
+            return make_response(jsonify(Result={"Status":"Invalid","Error":"1001"}), 400)
         if len(data['username']) > 32:
-            return jsonify(Result={"Status":"Invalid","Error":"1004"}), 400
+            return make_response(jsonify(Result={"Status":"Invalid","Error":"1004"}), 400)
         if data['password'] is None:
-            return jsonify(Result={"Status":"Invalid","Error":"1002"}), 400
+            return make_response(jsonify(Result={"Status":"Invalid","Error":"1002"}), 400)
         if len(data['password']) is 0:
-            return jsonify(Result={"Status":"Invalid","Error":"1005"}), 400
+            return make_response(jsonify(Result={"Status":"Invalid","Error":"1005"}), 400)
 
         if UserModel.lookup_user(data['username']):
-            return jsonify(Result={"Status":"Invalid","Error":"1003"}), 400
+            return make_response(jsonify(Result={"Status":"Invalid","Error":"1003"}), 400)
         user = UserModel(
             username=data['username'],
             password=UserModel.gen_hash(data['password']))
@@ -43,14 +43,14 @@ class Login(Resource):
         exp_time = timedelta(days=0, hours=0, minutes=minutes_valid) #set token valid time to 10 minutes
         data = PARSER.parse_args()
         if not data['username']:
-            return jsonify(Result={"Status":"Invalid","Error":"2000"}), 400
+            return make_response(jsonify(Result={"Status":"Invalid","Error":"2000"}), 400)
         if not data['password']:
-            return jsonify(Result={"Status":"Invalid","Error":"2001"}), 400
+            return make_response(jsonify(Result={"Status":"Invalid","Error":"2001"}), 400)
         user = UserModel.lookup_user(data['username'])
         if data['grant_type'] != 'password':
-            return jsonify(Result={"Status":"Invalid","Error":"2002"}), 400
+            return make_response(jsonify(Result={"Status":"Invalid","Error":"2002"}), 400)
         if not user:
-            return jsonify(Result={"Status":"Invalid","Error":"2003"}), 400
+            return make_response(jsonify(Result={"Status":"Invalid","Error":"2003"}), 400)
 
         if UserModel.verify_hash(data['password'], user.password):
             access_token = create_access_token(identity=data['username'], expires_delta=exp_time)
@@ -60,11 +60,11 @@ class Login(Resource):
                 expires_in=(minutes_valid*60),
                 claim_level="complete"
             )
-        return jsonify(Result={"Status":"Invalid","Error":"2003"}), 400
+        return make_response(jsonify(Result={"Status":"Invalid","Error":"2003"}), 400)
 
 class BrokenHTTPS(Resource):
     """BrokenHTTPS Class"""
     @classmethod
     def post(cls):
         """Handles post login requests if a valid HTTPS cert isn't found"""
-        return jsonify(message='Valid HTTPS cert does not exist'), 400
+        return make_response(jsonify(message='Valid HTTPS cert does not exist'), 400)
