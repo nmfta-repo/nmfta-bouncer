@@ -19,27 +19,7 @@ Depends-Build: python3-pip
 Description: Project Bouncer Firewall Controller
 EOF
 
-cat > bouncer/opt/bouncer/pyreqs.txt << EOF
-aniso8601==3.0.2
-bcrypt==3.1.4
-cffi==1.11.5
-click==6.7
-configparser==3.5.0
-Flask==1.0.2
-Flask-JWT-Extended==3.12.1
-Flask-RESTful==0.3.6
-Flask-SQLAlchemy==2.3.2
-itsdangerous==0.24
-Jinja2==2.10
-MarkupSafe==1.0
-netaddr==0.7.19
-pycparser==2.18
-PyJWT==1.6.4
-pytz==2018.5
-six==1.11.0
-SQLAlchemy==1.2.10
-Werkzeug==0.14.1
-EOF
+cp appliance/src/requirements.txt bouncer/opt/bouncer/pyreqs.txt
 
 cat > bouncer/DEBIAN/postinst << EOF
 cp /opt/bouncer/utils/bouncer-rest.service /etc/systemd/system/
