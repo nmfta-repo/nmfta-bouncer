@@ -11,6 +11,7 @@ import auth
 import manage
 import random
 import string
+import secrets
 
 VERSION = 1
 
@@ -29,11 +30,11 @@ config.read(args.config)
 APP = Flask(__name__)
 APP.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+config['DEFAULT']['dbname']
 APP.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-APP.config['SECRET_KEY'] = ''.join([random.choice(string.ascii_letters+string.digits) for n in range(32)])
+APP.config['SECRET_KEY'] = secrets.token_urlsafe(32)
 APP.config['PROPAGATE_EXCEPTIONS'] = True
 DB.init_app(APP)
 DB.create_all(app=APP)
-APP.config['JWT_SECRET_KEY'] = ''.join([random.choice(string.ascii_letters+string.digits) for n in range(32)])
+APP.config['JWT_SECRET_KEY'] = secrets.token_urlsafe(32)
 JWT = JWTManager(APP)
 API = Api(APP, prefix="/v{}".format(VERSION))
 

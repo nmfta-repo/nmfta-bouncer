@@ -4,3 +4,6 @@ appliance/src/__pycache__/*
 appliance/src/firewall.db
 appliance/*.pem
 uninstall.sh
+/.vs
+/appliance/src/env
+/appliance/src/.vscode

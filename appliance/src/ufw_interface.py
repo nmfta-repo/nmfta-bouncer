@@ -102,8 +102,8 @@ def _delete(port):
         try:
             rule_port = int(rule.dport)
         except:
-            pass
-        if port == rule_port:
+            rule_port = None
+        if rule_port is not None and port == rule_port:
             run("delete " + str(i+1), force=True)
             return True # delete one rule; enumeration changes after delete
     return False

@@ -19,7 +19,7 @@ def do_rules(conn):
     for row in cur:
         ufw.run("allow from {}".format(row[1]))
         if row[2]:
-            conn.execute("DELETE FROM iptable WHERE id={}".format(row[0]))
+            conn.execute("DELETE FROM iptable WHERE id=?", row[0])
             conn.commit()
             ufw.run("delete allow from {}".format(row[1]))
 
@@ -28,7 +28,7 @@ def do_rules(conn):
     for row in cur:
         ufw.run("deny from {}".format(row[1]))
         if row[2]:
-            conn.execute("DELETE FROM iptable WHERE id={}".format(row[0]))
+            conn.execute("DELETE FROM iptable WHERE id=?", row[0])
             conn.commit()
             ufw.run("delete deny from {}".format(row[1]))
 
