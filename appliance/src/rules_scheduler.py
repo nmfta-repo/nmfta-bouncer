@@ -52,8 +52,6 @@ def main():
     args = parser.parse_args()
     config.read(args.config)
     conn = sqlite3.connect(config['DEFAULT']['dbname'])
-    ufw.allow(config['DEFAULT']['port'])
-    ufw.enable()
     do_rules(conn)
 
 if __name__ == "__main__":

@@ -12,6 +12,7 @@ import manage
 import random
 import string
 import secrets
+import stat
 
 VERSION = 1
 
@@ -23,6 +24,25 @@ parser.add_argument("--testing", help="Enable testing features", action="store_t
 parser.add_argument("--config", help="Specify config file to read from",
     default="/opt/bouncer/default.conf")
 args = parser.parse_args()
+
+def check_configuration_file_permission(path):
+    #file owner should be root
+    path_stat = os.stat(path)   
+    if (path_stat.st_uid != 0):
+        return True
+    
+    #others should not have write permission
+    mode = path_stat.st_mode
+    if mode & stat.S_IWOTH or mode & stat.S_IWGRP:
+        return True
+    return False
+
+#the configuration file should have been created and owned by root
+if check_configuration_file_permission(args.config) == True:
+    print("configuration file unsafe, REST access to UFW blocked")
+    exit()
+
+#all good load configuration file
 config.read(args.config)
 
 
@@ -48,94 +68,89 @@ def expired_callback():
 #Add resources and endpoints to facilitate RESTful paradigm
 
 #if cert exists
-if os.path.isfile(config['DEFAULT']['keypath']) and os.path.isfile(config['DEFAULT']['certpath']):
-    #add auth module
-    API.add_resource(auth.Login, "/login")
+#add auth module
+API.add_resource(auth.Login, "/login")
 
-    #enable testing features
-    if args.testing:
-        API.add_resource(auth.Register, "/register")
+#enable testing features
+if args.testing:
+    API.add_resource(auth.Register, "/register")
 
-    API.add_resource(manage.SimpleCheck, "/check/<string:entry>",
-        resource_class_kwargs={"ltype":"wl"})
+API.add_resource(manage.SimpleCheck, "/check/<string:entry>",
+    resource_class_kwargs={"ltype":"wl"})
 
-    #add firewall modules
-    #add whitelist module
-    API.add_resource(
-        manage.Lists, "/whitelists",
-        resource_class_kwargs={"ltype":"wl"}, endpoint="wlgl")
-    API.add_resource(
-        manage.IpList, "/whitelists/ipaddresses",
-        resource_class_kwargs={"ltype":"wl"}, endpoint="wl")
-    API.add_resource(
-        manage.SearchIpList, "/whitelists/ipaddresses/filter/<string:filter_term>",
-        resource_class_kwargs={"ltype":"wl"}, endpoint="wlf")
-    API.add_resource(
-        manage.IpEntry, "/whitelists/ipaddresses/<string:entry>",
-        resource_class_kwargs={"ltype":"wl"}, endpoint="wle")
-    API.add_resource(
-        manage.UpdateIpEntry, "/whitelists/ipaddresses/<string:entry>/update",
-        resource_class_kwargs={"ltype":"wl"}, endpoint="wleu")
-    API.add_resource(
-        manage.CreateIpEntry, "/whitelists/ipaddresses/create",
-        resource_class_kwargs={"ltype":"wl"}, endpoint="wlc")
-    API.add_resource(
-        manage.DeleteIpEntry, "/whitelists/ipaddresses/<string:entry>/delete",
-        resource_class_kwargs={"ltype":"wl"}, endpoint="wld")
-    API.add_resource(
-        manage.GeoList, "/whitelists/geolocations",
-        resource_class_kwargs={"ltype":"wl"}, endpoint="wlg")
-    API.add_resource(
-        manage.CreateGeoEntry, "/whitelists/geolocations/create",
-        resource_class_kwargs={"ltype":"wl"}, endpoint="wlgc")
-    API.add_resource(
-        manage.GeoEntry, "/whitelists/geolocations/<string:entry>",
-        resource_class_kwargs={"ltype":"wl"}, endpoint="wlge")
-    API.add_resource(
-        manage.UpdateGeoEntry, "/whitelists/geolocations/<string:entry>/update",
-        resource_class_kwargs={"ltype":"wl"}, endpoint="wlgu")
-    API.add_resource(
-        manage.DeleteGeoEntry, "/whitelists/geolocations/<string:entry>/delete",
-        resource_class_kwargs={"ltype":"wl"}, endpoint="wlgd")
+#add firewall modules
+#add whitelist module
+API.add_resource(
+    manage.Lists, "/whitelists",
+    resource_class_kwargs={"ltype":"wl"}, endpoint="wlgl")
+API.add_resource(
+    manage.IpList, "/whitelists/ipaddresses",
+    resource_class_kwargs={"ltype":"wl"}, endpoint="wl")
+API.add_resource(
+    manage.SearchIpList, "/whitelists/ipaddresses/filter/<string:filter_term>",
+    resource_class_kwargs={"ltype":"wl"}, endpoint="wlf")
+API.add_resource(
+    manage.IpEntry, "/whitelists/ipaddresses/<string:entry>",
+    resource_class_kwargs={"ltype":"wl"}, endpoint="wle")
+API.add_resource(
+    manage.UpdateIpEntry, "/whitelists/ipaddresses/<string:entry>/update",
+    resource_class_kwargs={"ltype":"wl"}, endpoint="wleu")
+API.add_resource(
+    manage.CreateIpEntry, "/whitelists/ipaddresses/create",
+    resource_class_kwargs={"ltype":"wl"}, endpoint="wlc")
+API.add_resource(
+    manage.DeleteIpEntry, "/whitelists/ipaddresses/<string:entry>/delete",
+    resource_class_kwargs={"ltype":"wl"}, endpoint="wld")
+API.add_resource(
+    manage.GeoList, "/whitelists/geolocations",
+    resource_class_kwargs={"ltype":"wl"}, endpoint="wlg")
+API.add_resource(
+    manage.CreateGeoEntry, "/whitelists/geolocations/create",
+    resource_class_kwargs={"ltype":"wl"}, endpoint="wlgc")
+API.add_resource(
+    manage.GeoEntry, "/whitelists/geolocations/<string:entry>",
+    resource_class_kwargs={"ltype":"wl"}, endpoint="wlge")
+API.add_resource(
+    manage.UpdateGeoEntry, "/whitelists/geolocations/<string:entry>/update",
+    resource_class_kwargs={"ltype":"wl"}, endpoint="wlgu")
+API.add_resource(
+    manage.DeleteGeoEntry, "/whitelists/geolocations/<string:entry>/delete",
+    resource_class_kwargs={"ltype":"wl"}, endpoint="wlgd")
 
-    #add blacklist module
-    API.add_resource(
-        manage.Lists, "/blacklists",
-        resource_class_kwargs={"ltype":"bl"}, endpoint="blgl")
-    API.add_resource(
-        manage.IpList, "/blacklists/ipaddresses",
-        resource_class_kwargs={"ltype":"bl"}, endpoint="bl")
-    API.add_resource(
-        manage.SearchIpList, "/blacklists/ipaddresses/filter/<string:filter_term>",
-        resource_class_kwargs={"ltype":"bl"}, endpoint="blf")
-    API.add_resource(
-        manage.IpEntry, "/blacklists/ipaddresses/<string:entry>",
-        resource_class_kwargs={"ltype":"bl"}, endpoint="ble")
-    API.add_resource(
-        manage.CreateIpEntry, "/blacklists/ipaddresses/create",
-        resource_class_kwargs={"ltype":"bl"}, endpoint="blc")
-    API.add_resource(
-        manage.DeleteIpEntry, "/blacklists/ipaddresses/<string:entry>/delete",
-        resource_class_kwargs={"ltype":"bl"}, endpoint="bld")
-    API.add_resource(
-        manage.GeoList, "/blacklists/geolocations",
-        resource_class_kwargs={"ltype":"bl"}, endpoint="blg")
-    API.add_resource(
-        manage.CreateGeoEntry, "/blacklists/geolocations/create",
-        resource_class_kwargs={"ltype":"bl"}, endpoint="blgc")
-    API.add_resource(
-        manage.GeoEntry, "/blacklists/geolocations/<string:entry>",
-        resource_class_kwargs={"ltype":"bl"}, endpoint="blge")
-    API.add_resource(
-        manage.UpdateGeoEntry, "/blacklists/geolocations/<string:entry>/update",
-        resource_class_kwargs={"ltype":"bl"}, endpoint="blgu")
-    API.add_resource(
-        manage.DeleteGeoEntry, "/blacklists/geolocations/<string:entry>/delete",
-        resource_class_kwargs={"ltype":"bl"}, endpoint="blgd")
+#add blacklist module
+API.add_resource(
+    manage.Lists, "/blacklists",
+    resource_class_kwargs={"ltype":"bl"}, endpoint="blgl")
+API.add_resource(
+    manage.IpList, "/blacklists/ipaddresses",
+    resource_class_kwargs={"ltype":"bl"}, endpoint="bl")
+API.add_resource(
+    manage.SearchIpList, "/blacklists/ipaddresses/filter/<string:filter_term>",
+    resource_class_kwargs={"ltype":"bl"}, endpoint="blf")
+API.add_resource(
+    manage.IpEntry, "/blacklists/ipaddresses/<string:entry>",
+    resource_class_kwargs={"ltype":"bl"}, endpoint="ble")
+API.add_resource(
+    manage.CreateIpEntry, "/blacklists/ipaddresses/create",
+    resource_class_kwargs={"ltype":"bl"}, endpoint="blc")
+API.add_resource(
+    manage.DeleteIpEntry, "/blacklists/ipaddresses/<string:entry>/delete",
+    resource_class_kwargs={"ltype":"bl"}, endpoint="bld")
+API.add_resource(
+    manage.GeoList, "/blacklists/geolocations",
+    resource_class_kwargs={"ltype":"bl"}, endpoint="blg")
+API.add_resource(
+    manage.CreateGeoEntry, "/blacklists/geolocations/create",
+    resource_class_kwargs={"ltype":"bl"}, endpoint="blgc")
+API.add_resource(
+    manage.GeoEntry, "/blacklists/geolocations/<string:entry>",
+    resource_class_kwargs={"ltype":"bl"}, endpoint="blge")
+API.add_resource(
+    manage.UpdateGeoEntry, "/blacklists/geolocations/<string:entry>/update",
+    resource_class_kwargs={"ltype":"bl"}, endpoint="blgu")
+API.add_resource(
+    manage.DeleteGeoEntry, "/blacklists/geolocations/<string:entry>/delete",
+    resource_class_kwargs={"ltype":"bl"}, endpoint="blgd")
 
-    APP.run(ssl_context=(config['DEFAULT']['certpath'], config['DEFAULT']['keypath']), port=config['DEFAULT']['port'], host=config['DEFAULT']['listenip'])
-
-else:
-    print("Certs are not set correctly; disabling for security reasons")
-    API.add_resource(auth.BrokenHTTPS, "/login")
+if __name__ == "__main__":
     APP.run(port=config['DEFAULT']['port'], host=config['DEFAULT']['listenip'])
