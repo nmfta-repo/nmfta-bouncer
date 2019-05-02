@@ -14,7 +14,7 @@ import string
 import secrets
 import stat
 
-VERSION = 1
+VERSION = 1.1
 
 
 #Parse args and read config from configfile
