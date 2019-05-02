@@ -728,10 +728,10 @@ Authenticate to this Bouncer instance.
 + Response 200 (application/json)
 
     + Attributes (object)
-        + access_token:                         `{access_token}` (string, required) - the access token to use in all future requests
-        + token_type:                                   `bearer` (string, required) - always `bearer`
-        + expires_in:                  `{expiration in seconds}` (string, required) - the expiry time of this bearer token
-        + claim_level:                                `complete` (string, required) - always `complete`
+        + access_token                                           (string, required) - the access token to use in all future requests
+        + token_type:                                   `bearer` (string, required, fixed) - always `bearer`
+        + expires_in                                             (string, required) - the expiry of this bearer token in seconds
+        + claim_level:                                `complete` (string, required, fixed) - always `complete`
 
 + Response 400 (application/json)
 
