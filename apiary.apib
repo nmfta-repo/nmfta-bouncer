@@ -64,7 +64,9 @@ Errors in this API are returned in JSON objects with error code references in an
 
 # Group Whitelist
 
-## List all IP Addresses and Geo Locations in the Whitelist [GET /v1.1/whitelists]
+## All Contents [GET /v1.1/whitelists]
+
+This will list the entire contents of the Whitelist including both IP Addresses and Geo Locations.
 
 + Request
     + Headers
@@ -87,7 +89,9 @@ Errors in this API are returned in JSON objects with error code references in an
 
 # Group Whitelist: IP Addresses
 
-## Search for IP Addresses in the Whitelist [GET /v1.1/whitelists/ipaddresses/filter/{search_filter}]
+## Search [GET /v1.1/whitelists/ipaddresses/filter/{search_filter}]
+
+Search for IP Addresses in the Whitelist
 
 + Parameters
     + search_filter:         `192.168.100.0+24,192.168.101.0+24` (string, required) - an comma-separated lsit of IP addresses in CIDR format (`192.168.100.14/24`) except with `/` replaced by `+`
@@ -113,7 +117,9 @@ Errors in this API are returned in JSON objects with error code references in an
 
     + Attributes (Return)
 
-## List all IP Addresses in the Whitelist [GET /v1.1/whitelists/ipaddresses]
+## List [GET /v1.1/whitelists/ipaddresses]
+
+List all IP Addresses in the Whitelist
 
 + Request
     + Headers
@@ -133,7 +139,9 @@ Errors in this API are returned in JSON objects with error code references in an
 
     + Attributes (Return)
 
-## Get Details of an IP Address Entry in the Whitelist [GET /v1.1/whitelists/ipaddresses/{entry_id}]
+## Get Details [GET /v1.1/whitelists/ipaddresses/{entry_id}]
+
+Get Details of an IP Address Entry in the Whitelist
 
 + Parameters
     + entry_id:              `884d9804999fc47a3c2694e49ad2536a` (string, required) - a unique identifier for the IP Address; opaque but likely a GUID
@@ -157,7 +165,9 @@ Errors in this API are returned in JSON objects with error code references in an
 
     + Attributes (Return)
 
-## Create an IP Address in the Whitelist [POST /v1.1/whitelists/ipaddresses/create]
+## Create [POST /v1.1/whitelists/ipaddresses/create]
+
+Create an IP Address in the Whitelist
 
 + Request
     + Headers
@@ -179,7 +189,9 @@ Errors in this API are returned in JSON objects with error code references in an
 
     + Attributes (Return)
 
-## Update an IP Address in the Whitelist [PUT /v1.1/whitelists/ipaddresses/{entry_id}/update]
+## Update [PUT /v1.1/whitelists/ipaddresses/{entry_id}/update]
+
+Update an IP Address in the Whitelist
 
 + Parameters
     + entry_id:               `884d9804999fc47a3c2694e49ad2536a` (string, required) - a unique identifier for the IP Address; opaque but likely a GUID
@@ -204,7 +216,9 @@ Errors in this API are returned in JSON objects with error code references in an
 
     + Attributes (Return)
 
-## Remove an IP Address in the Whitelist [DELETE /v1.1/whitelists/ipaddresses/{entry_id}/delete]
+## Remove [DELETE /v1.1/whitelists/ipaddresses/{entry_id}/delete]
+
+Remove an IP Address in the Whitelist
 
 + Parameters
     + entry_id:               `884d9804999fc47a3c2694e49ad2536a` (string, required) - a unique identifier for the IP Address; opaque but likely a GUID
@@ -231,7 +245,9 @@ Errors in this API are returned in JSON objects with error code references in an
 
 # Group Whitelist: Geo Locations
 
-## List all Geo Locations in the Whitelist [GET /v1.1/whitelists/geolocations]
+## List [GET /v1.1/whitelists/geolocations]
+
+List all Geo Locations in the Whitelist
 
 + Request
     + Headers
@@ -251,7 +267,9 @@ Errors in this API are returned in JSON objects with error code references in an
 
     + Attributes (Return)
 
-## Get Details of a Geo Location Entry in the Whitelist [GET /v1.1/whitelists/geolocations/{entry_id}]
+## Get Details [GET /v1.1/whitelists/geolocations/{entry_id}]
+
+Get Details of a Geo Location Entry in the Whitelist
 
 + Parameters
     + entry_id:              `884d9804999fc47a3c2694e49ad2536a` (string, required) - a unique identifier for the Geo Location; opaque but likely a GUID
@@ -275,9 +293,9 @@ Errors in this API are returned in JSON objects with error code references in an
 
     + Attributes (Return)
 
-## Create a Geo Location in the Whitelist [POST /v1.1/whitelists/geolocations/create]
+## Create [POST /v1.1/whitelists/geolocations/create]
 
-When POSTed-to this endpoint, Bouncer scans `geolist.txt` for any IPs matching the Country Code (CC) in the POSTed object and, for each: Bouncer will create a new ipaddress in this list (black- or white-list).
+Create a Geo Location in the Whitelist. When POSTed-to this endpoint, Bouncer scans `geolist.txt` for any IPs matching the Country Code (CC) in the POSTed object and, for each: Bouncer will create a new ipaddress in this list (black- or white-list).
 
 + Request
     + Headers
@@ -299,7 +317,9 @@ When POSTed-to this endpoint, Bouncer scans `geolist.txt` for any IPs matching t
 
     + Attributes (Return)
 
-## Update a Geo Location in the Whitelist [PUT /v1.1/whitelists/geolocations/{entry_id}/update]
+## Update [PUT /v1.1/whitelists/geolocations/{entry_id}/update]
+
+Update a Geo Location in the Whitelist
 
 + Parameters
     + entry_id:               `884d9804999fc47a3c2694e49ad2536a` (string, required) - a unique identifier for the Geo Location; opaque but likely a GUID
@@ -324,7 +344,9 @@ When POSTed-to this endpoint, Bouncer scans `geolist.txt` for any IPs matching t
 
     + Attributes (Return)
 
-## Remove a Geo Location in the Whitelist [DELETE /v1.1/whitelists/geolocations/{entry_id}/delete]
+## Remove [DELETE /v1.1/whitelists/geolocations/{entry_id}/delete]
+
+Remove a Geo Location in the Whitelist
 
 + Parameters
     + entry_id:               `884d9804999fc47a3c2694e49ad2536a` (string, required) - a unique identifier for the Geo Location; opaque but likely a GUID
@@ -351,7 +373,9 @@ When POSTed-to this endpoint, Bouncer scans `geolist.txt` for any IPs matching t
 
 # Group Blacklist
 
-## List all IP Addresses and Geo Locations in the Blacklist [GET /v1.1/blacklists]
+## All Contents [GET /v1.1/blacklists]
+
+This will list the entire contents of the Whitelist including both IP Addresses and Geo Locations.
 
 + Request
     + Headers
@@ -374,7 +398,9 @@ When POSTed-to this endpoint, Bouncer scans `geolist.txt` for any IPs matching t
 
 # Group Blacklist: IP Addresses
 
-## Search for IP Addresses in the Blacklist [GET /v1.1/blacklists/ipaddresses/filter/{search_filter}]
+## Search [GET /v1.1/blacklists/ipaddresses/filter/{search_filter}]
+
+Search for IP Addresses in the Blacklist
 
 + Parameters
     + search_filter:         `192.168.100.0+24,192.168.101.0+24` (string, required) - an comma-separated lsit of IP addresses in CIDR format (`192.168.100.14/24`) except with `/` replaced by `+`
@@ -400,7 +426,9 @@ When POSTed-to this endpoint, Bouncer scans `geolist.txt` for any IPs matching t
 
     + Attributes (Return)
 
-## List all IP Addresses in the Blacklist [GET /v1.1/blacklists/ipaddresses]
+## List [GET /v1.1/blacklists/ipaddresses]
+
+List all IP Addresses in the Blacklist
 
 + Request
     + Headers
@@ -420,7 +448,9 @@ When POSTed-to this endpoint, Bouncer scans `geolist.txt` for any IPs matching t
 
     + Attributes (Return)
 
-## Get Details of an IP Address Entry in the Blacklist [GET /v1.1/blacklists/ipaddresses/{entry_id}]
+## Get Details [GET /v1.1/blacklists/ipaddresses/{entry_id}]
+
+Get Details of an IP Address Entry in the Blacklist
 
 + Parameters
     + entry_id:              `884d9804999fc47a3c2694e49ad2536a` (string, required) - a unique identifier for the IP Address; opaque but likely a GUID
@@ -444,7 +474,9 @@ When POSTed-to this endpoint, Bouncer scans `geolist.txt` for any IPs matching t
 
     + Attributes (Return)
 
-## Create an IP Address in the Blacklist [POST /v1.1/blacklists/ipaddresses/create]
+## Create [POST /v1.1/blacklists/ipaddresses/create]
+
+Create an IP Address in the Blacklist
 
 + Request
     + Headers
@@ -466,7 +498,9 @@ When POSTed-to this endpoint, Bouncer scans `geolist.txt` for any IPs matching t
 
     + Attributes (Return)
 
-## Update an IP Address in the Blacklist [PUT /v1.1/blacklists/ipaddresses/{entry_id}/update]
+## Update [PUT /v1.1/blacklists/ipaddresses/{entry_id}/update]
+
+Update an IP Address in the Blacklist
 
 + Parameters
     + entry_id:               `884d9804999fc47a3c2694e49ad2536a` (string, required) - a unique identifier for the IP Address; opaque but likely a GUID
@@ -491,7 +525,9 @@ When POSTed-to this endpoint, Bouncer scans `geolist.txt` for any IPs matching t
 
     + Attributes (Return)
 
-## Remove an IP Address in the Blacklist [DELETE /v1.1/blacklists/ipaddresses/{entry_id}/delete]
+## Remove [DELETE /v1.1/blacklists/ipaddresses/{entry_id}/delete]
+
+Remove an IP Address in the Blacklist
 
 + Parameters
     + entry_id:               `884d9804999fc47a3c2694e49ad2536a` (string, required) - a unique identifier for the IP Address; opaque but likely a GUID
@@ -518,7 +554,9 @@ When POSTed-to this endpoint, Bouncer scans `geolist.txt` for any IPs matching t
 
 # Group Blacklist: Geo Locations
 
-## List all Geo Locations in the Blacklist [GET /v1.1/blacklists/geolocations]
+## List [GET /v1.1/blacklists/geolocations]
+
+List all Geo Locations in the Blacklist
 
 + Request
     + Headers
@@ -538,7 +576,9 @@ When POSTed-to this endpoint, Bouncer scans `geolist.txt` for any IPs matching t
 
     + Attributes (Return)
 
-## Get Details of a Geo Location Entry in the Blacklist [GET /v1.1/blacklists/geolocations/{entry_id}]
+## Get Details [GET /v1.1/blacklists/geolocations/{entry_id}]
+
+Get Details of a Geo Location Entry in the Blacklist
 
 + Parameters
     + entry_id:              `884d9804999fc47a3c2694e49ad2536a` (string, required) - a unique identifier for the Geo Location; opaque but likely a GUID
@@ -562,9 +602,9 @@ When POSTed-to this endpoint, Bouncer scans `geolist.txt` for any IPs matching t
 
     + Attributes (Return)
 
-## Create a Geo Location in the Blacklist [POST /v1.1/blacklists/geolocations/create]
+## Create [POST /v1.1/blacklists/geolocations/create]
 
-When POSTed-to this endpoint, Bouncer scans `geolist.txt` for any IPs matching the Country Code (CC) in the POSTed object and, for each: Bouncer will create a new ipaddress in this list (black- or white-list).
+Create a Geo Location in the Blacklist. When POSTed-to this endpoint, Bouncer scans `geolist.txt` for any IPs matching the Country Code (CC) in the POSTed object and, for each: Bouncer will create a new ipaddress in this list (black- or white-list).
 
 + Request
     + Headers
@@ -586,7 +626,9 @@ When POSTed-to this endpoint, Bouncer scans `geolist.txt` for any IPs matching t
 
     + Attributes (Return)
 
-## Update a Geo Location in the Blacklist [PUT /v1.1/blacklists/geolocations/{entry_id}/update]
+## Update [PUT /v1.1/blacklists/geolocations/{entry_id}/update]
+
+Update a Geo Location in the Blacklist
 
 + Parameters
     + entry_id:               `884d9804999fc47a3c2694e49ad2536a` (string, required) - a unique identifier for the Geo Location; opaque but likely a GUID
@@ -611,7 +653,9 @@ When POSTed-to this endpoint, Bouncer scans `geolist.txt` for any IPs matching t
 
     + Attributes (Return)
 
-## Remove a Geo Location in the Blacklist [DELETE /v1.1/blacklists/geolocations/{entry_id}/delete]
+## Remove [DELETE /v1.1/blacklists/geolocations/{entry_id}/delete]
+
+Remove a Geo Location in the Blacklist
 
 + Parameters
     + entry_id:               `884d9804999fc47a3c2694e49ad2536a` (string, required) - a unique identifier for the Geo Location; opaque but likely a GUID
@@ -638,7 +682,9 @@ When POSTed-to this endpoint, Bouncer scans `geolist.txt` for any IPs matching t
 
 # Group Check IP Addresses
 
-## Check if an IP Address is Already White- or Black-Listed [GET /v1.1/check/{ip_address}]
+## Test for List Membership [GET /v1.1/check/{ip_address}]
+
+Check if an IP Address is Already White- or Black-Listed
 
 + Parameters
     + ip_address:                               `192.168.100.14` (string, required) - the IP address to check
