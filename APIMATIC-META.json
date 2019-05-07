@@ -1,0 +1,6 @@
+{
+	"Authentication": {
+    	"Type": "CustomAuth",
+    	"AuthType": "CustomAuth"
+  }
+}
