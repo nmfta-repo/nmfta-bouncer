@@ -4,6 +4,7 @@ from flask import jsonify, make_response
 import netaddr
 import math
 import ipaddress
+import csv
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required
 from models import IPModel, GeoModel
@@ -273,16 +274,20 @@ class CreateGeoEntry(Checker, Resource):
                     end_date=data['End_Date'], comments=data['Comments'], active=active, remove=False)
         new_geo.save()
 
-        f = open("geolist.txt")
-        lines = f.readlines()
-        for line in lines:
-            if (('ipv4' in line) & (new_geo.cc in line)) :
-                s=line.split("|")
-                net=s[3]
-                cidr=float(s[4])
-                ip4 = "%s/%d" % (net,(32-math.log(cidr,2)))
-                new_ip = IPModel(lt=self.ltype, ipv4=ip4, geo=new_geo.id, remove=False)
-                new_ip.save()
+        f = open("ipv4geolist.csv")
+        try:
+            reader = csv.reader(f)
+            for row in reader:
+                country_code = row[2]
+                if (country_code == new_geo.cc):
+                    startIp = ipaddress.ip_address(int(row[0]))
+                    endIp = ipaddress.ip_address(int(row[1]))
+                    range = [ipaddr for ipaddr in ipaddress.summarize_address_range(startIp, endIp)]
+                    for item in range:
+                        new_ip = IPModel(lt=self.ltype, ipv4=str(item), geo=new_geo.id, remove=False)
+                        new_ip.save()
+        finally:
+            f.close()
 
         return jsonify(
             Result={
