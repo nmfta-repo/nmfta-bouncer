@@ -87,9 +87,7 @@ class IpList(Checker, Resource):
 
 class SearchIpList(Checker, Resource):
     """This provides an end-point to look for the whitelisted IP Addresses.
-    If a country code is passed, the list of all available IP Address Entries
-    for the passed in country code should be returned
-    shows IPs with entry_id in front"""
+    """
     @jwt_required
     def get(self, filter_term):
         """Handles get EntrySearch requests
