@@ -23,3 +23,10 @@ The API is pubished in various forms:
 * at [apimatic/.../nmfta-bouncer](https://www.apimatic.io/apidocs/nmfta-bouncer) as:
 	* Exportable API specifications in multiple formats including: Open API 3.0, RAML 1.0, and Swagger 2.0
 	* Downloadable (client) SDKs in .NET, Java and Python
+
+## Geo IP Database
+
+The ipv4geolist.csv was downloaded from http://lite.ip2location.com. The list is updated periodically so make sure to download the most recent version to keep the database upto date.
+
+Terms of Use for ipv4geolist.csv can be viewed online at https://lite.ip2location.com/terms-of-use
+
