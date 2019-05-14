@@ -7,3 +7,9 @@ uninstall.sh
 /.vs
 /appliance/src/env
 /appliance/src/.vscode
+/client/python/.vscode
+/client/python/env
+/client/csharp/SampleBouncerApiClient/bin/Debug/netcoreapp2.2
+/client/csharp/SampleBouncerApiClient/obj
+/client/csharp/.vs/SampleBouncerApiClient/v16
+/client/csharp/SampleBouncerApiClient.sln.DotSettings.user

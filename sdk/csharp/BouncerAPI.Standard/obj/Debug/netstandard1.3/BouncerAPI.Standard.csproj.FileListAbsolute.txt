@@ -1,0 +1,9 @@
+D:\Incept\Bouncer\nmfta-bouncer\sdk\csharp\BouncerAPI.Standard\bin\Debug\netstandard1.3\BouncerAPI.Standard.deps.json
+D:\Incept\Bouncer\nmfta-bouncer\sdk\csharp\BouncerAPI.Standard\bin\Debug\netstandard1.3\BouncerAPI.Standard.dll
+D:\Incept\Bouncer\nmfta-bouncer\sdk\csharp\BouncerAPI.Standard\bin\Debug\netstandard1.3\BouncerAPI.Standard.pdb
+D:\Incept\Bouncer\nmfta-bouncer\sdk\csharp\BouncerAPI.Standard\obj\Debug\netstandard1.3\BouncerAPI.Standard.csprojAssemblyReference.cache
+D:\Incept\Bouncer\nmfta-bouncer\sdk\csharp\BouncerAPI.Standard\obj\Debug\netstandard1.3\BouncerAPI.Standard.csproj.CoreCompileInputs.cache
+D:\Incept\Bouncer\nmfta-bouncer\sdk\csharp\BouncerAPI.Standard\obj\Debug\netstandard1.3\BouncerAPI.Standard.AssemblyInfoInputs.cache
+D:\Incept\Bouncer\nmfta-bouncer\sdk\csharp\BouncerAPI.Standard\obj\Debug\netstandard1.3\BouncerAPI.Standard.AssemblyInfo.cs
+D:\Incept\Bouncer\nmfta-bouncer\sdk\csharp\BouncerAPI.Standard\obj\Debug\netstandard1.3\BouncerAPI.Standard.dll
+D:\Incept\Bouncer\nmfta-bouncer\sdk\csharp\BouncerAPI.Standard\obj\Debug\netstandard1.3\BouncerAPI.Standard.pdb
