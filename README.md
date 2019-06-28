@@ -30,3 +30,20 @@ The ipv4geolist.csv was downloaded from http://lite.ip2location.com. The list is
 
 Terms of Use for ipv4geolist.csv can be viewed online at https://lite.ip2location.com/terms-of-use
 
+## Running Bouncer REST API in Apache
+
+* Install Apache2 and enable mod_wsgi
+* Install mod_wsgi for Python 3 
+	* sudo apt-get install libapache2-mod-wsgi-py3
+* Copy REST API Configuration file to apache 
+	* cp /opt/bouncer/src/rest_interface.conf /etc/apache2/sites-available
+	* Update Server Name in configuration file to proper IP Address or DNS
+	* To support SSL, copy the applicable certificate and configure it in Apache
+	* Update or add rest_interface.conf file for https
+* Enable REST interface and reload Apache configuration
+	* a2ensite rest_interface.conf
+	* apache2ctl restart
+* make sure firewall.db has write permission
+	* chmod 646 /opt/bouncer/src/firewall.db
+
+

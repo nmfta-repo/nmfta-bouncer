@@ -13,3 +13,6 @@ uninstall.sh
 /client/csharp/SampleBouncerApiClient/obj
 /client/csharp/.vs/SampleBouncerApiClient/v16
 /client/csharp/SampleBouncerApiClient.sln.DotSettings.user
+/sdk/csharp/BouncerAPI.Standard/obj/Release/netstandard1.3/BouncerAPI.Standard.assets.cache
+/sdk/csharp/BouncerAPI.Tests/obj/Debug/netcoreapp1.1
+/client/csharp/.vs/SampleBouncerApiClient/DesignTimeBuild
