@@ -30,6 +30,21 @@ The ipv4geolist.csv was downloaded from http://lite.ip2location.com. The list is
 
 Terms of Use for ipv4geolist.csv can be viewed online at https://lite.ip2location.com/terms-of-use
 
+# Client Installation
+
+* Follow the client installation instructions in either `client/python` or `client/csharp`
+
+# Server Installation
+
+Bouncer realizes firewall changes by executing `ufw` commands. It requires a working UFW installation (probably on Linux). Other server deps
+* Python (use `appliance/src/requirements.txt` for all package dependencies)
+* a webserver to host the management interface and API, e.g. Apache2
+
+## Setting up the Appliance
+
+* Follow the appliance installation instructions in `Bouncer Installation Document v1.pdf`
+	* The appliance instructions assume installation on a netgate firewall appliance. You can also install on a Debian distribution following just the steps in *section 1.2*
+
 ## Running Bouncer REST API in Apache
 
 * Install Apache2 and enable mod_wsgi
